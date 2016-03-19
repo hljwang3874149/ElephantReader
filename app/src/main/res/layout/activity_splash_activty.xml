@@ -1,0 +1,24 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#0099cc"
+    >
+
+    <ImageView
+        android:id="@+id/splash_image"
+        android:layout_width="1000dp"
+        android:scaleType="fitXY"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"/>
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:text="@string/dummy_content"
+        android:textColor="#7f8081"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+</FrameLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Simple_Reader</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">简单阅</string>
+    <string name="title_activity_main">simple_reader</string>
+</resources>
