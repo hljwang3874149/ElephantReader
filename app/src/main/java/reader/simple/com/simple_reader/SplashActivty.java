@@ -1,6 +1,9 @@
 package reader.simple.com.simple_reader;
 
 import android.content.Intent;
+import android.os.Build;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 
@@ -41,6 +44,16 @@ public class SplashActivty extends BaseActivity implements SplashView {
         DebugUtil.e("initViewsAndEvents");
         Presenter splashPresenter = new SplashPresenter(this, this);
         splashPresenter.initialized();
+    }
+
+    @Override
+    protected void doBeforeSetContentView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
     }
 
     @Override

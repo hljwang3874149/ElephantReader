@@ -57,6 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         super.onCreate(savedInstanceState);
+        doBeforeSetContentView();
         setContentView(getContentViewLayoutID());
         initViewsAndEvents();
     }
@@ -153,12 +154,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.reset(this);
     }
-    public void  startActivityWithIntent(Intent intent){
+
+    public void startActivityWithIntent(Intent intent) {
         startActivity(intent);
     }
 
@@ -169,5 +172,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getContentViewLayoutID();
 
     protected abstract void initViewsAndEvents();
+
+    protected  void doBeforeSetContentView(){
+
+    };
 
 }
