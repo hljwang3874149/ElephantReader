@@ -19,7 +19,7 @@
         android:gravity="center"
         android:keepScreenOn="true"
         android:text="@string/dummy_content"
-        android:textColor="#7f8081"
+        android:textColor="#802a3e"
         android:textSize="20sp"
         android:textStyle="bold"
         android:scaleX="0"

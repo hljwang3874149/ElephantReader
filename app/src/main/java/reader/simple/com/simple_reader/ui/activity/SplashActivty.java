@@ -56,6 +56,7 @@ public class SplashActivty extends BaseActivity implements SplashView {
         ViewCompat.animate(fullscreenContent)
                 .scaleX(1.0f)
                 .scaleY(1.0f)
+                .translationY(-100)
                 .alpha(1f)
                 .setInterpolator(new BounceInterpolator())
                 .setStartDelay((long) (DateUtils.SECOND_IN_MILLIS*0.5))
