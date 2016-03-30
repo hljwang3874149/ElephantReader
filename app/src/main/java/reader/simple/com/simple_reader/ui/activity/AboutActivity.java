@@ -1,17 +1,16 @@
-package reader.simple.com.simple_reader;
+package reader.simple.com.simple_reader.ui.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.graphics.Color;
-import android.support.v4.view.ViewCompat;
-import android.text.format.DateUtils;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 
 import butterknife.InjectView;
+import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.presenter.impl.AboutPresenter;
+import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 import reader.simple.com.simple_reader.viewInterface.AboutView;
 
 public class AboutActivity extends BaseActivity implements AboutView {

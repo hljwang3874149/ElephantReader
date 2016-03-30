@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="reader.simple.com.simple_reader.AboutActivity">
+    tools:context=".ui.activity.AboutActivity">
 
     <include layout="@layout/common_toolbar"/>
 

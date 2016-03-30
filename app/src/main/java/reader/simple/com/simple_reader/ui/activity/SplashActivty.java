@@ -1,4 +1,4 @@
-package reader.simple.com.simple_reader;
+package reader.simple.com.simple_reader.ui.activity;
 
 import android.content.Intent;
 import android.os.Build;
@@ -8,9 +8,11 @@ import android.widget.ImageView;
 
 
 import butterknife.InjectView;
+import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.presenter.impl.SplashPresenter;
+import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 import reader.simple.com.simple_reader.viewInterface.SplashView;
 
 

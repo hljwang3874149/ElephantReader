@@ -1,4 +1,4 @@
-package reader.simple.com.simple_reader;
+package reader.simple.com.simple_reader.ui.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 
 import butterknife.InjectView;
+import reader.simple.com.simple_reader.R;
+import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

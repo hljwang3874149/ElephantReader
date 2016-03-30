@@ -1,4 +1,4 @@
-package reader.simple.com.simple_reader;
+package reader.simple.com.simple_reader.ui.activity.base;
 
 import android.content.Intent;
 import android.os.Build;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import butterknife.ButterKnife;
+import reader.simple.com.simple_reader.R;
 
 /**
  * 项目名称：Simple_Reader

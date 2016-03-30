@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivty"
+            android:name=".ui.activity.SplashActivty"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme">
@@ -25,7 +25,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -34,7 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AboutActivity">
+        <activity android:name=".ui.activity.AboutActivity">
         </activity>
     </application>
 
