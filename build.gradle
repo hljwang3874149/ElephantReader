@@ -63,6 +63,7 @@ project.ext {
     libAnkoSdk = "org.jetbrains.anko:anko-sdk15:${ankoVersion}"
     libAnkoSdkv4 = "org.jetbrains.anko:anko-support-v4:${ankoVersion}"
     libAnkoSdkv7 = "rg.jetbrains.anko:anko-appcompat-v7:${ankoVersion}"
+    libRipple = "com.balysv:material-ripple:1.0.2"
 //    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 //    compile 'org.jetbrains.anko:anko-sdk15:0.8.3' // sdk19, sdk21, sdk23 are also available
 //    compile 'org.jetbrains.anko:anko-support-v4:0.8.3' // In case you need support-v4 bindings

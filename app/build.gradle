@@ -50,5 +50,6 @@ dependencies {
     compile rootProject.ext.libSupportRecyclerview
     compile rootProject.ext.debugDependencies.leakCanary
     compile rootProject.ext.libKotlin
+    compile rootProject.ext.libRipple
 
 }

@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:tools="http://schemas.android.com/tools"
              android:background="#0099cc"
     >
 
@@ -20,5 +21,9 @@
         android:text="@string/dummy_content"
         android:textColor="#7f8081"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:alpha="0"
+        tools:scaleAlpha = "1"/>
 </FrameLayout>

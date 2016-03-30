@@ -2,11 +2,16 @@ package reader.simple.com.simple_reader.ui.activity;
 
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.text.format.DateUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.DebugUtil;
@@ -24,6 +29,8 @@ public class SplashActivty extends BaseActivity implements SplashView {
 
     @InjectView(R.id.splash_image)
     ImageView splashImage;
+    @InjectView(R.id.fullscreen_content)
+    TextView fullscreenContent;
 
     @Override
     protected boolean pendingTransition() {
@@ -43,9 +50,17 @@ public class SplashActivty extends BaseActivity implements SplashView {
 
     @Override
     protected void initViewsAndEvents() {
-        DebugUtil.e("initViewsAndEvents");
         Presenter splashPresenter = new SplashPresenter(this, this);
         splashPresenter.initialized();
+
+        ViewCompat.animate(fullscreenContent)
+                .scaleX(1.0f)
+                .scaleY(1.0f)
+                .alpha(1f)
+                .setInterpolator(new BounceInterpolator())
+                .setStartDelay((long) (DateUtils.SECOND_IN_MILLIS*0.5))
+                .setDuration(DateUtils.SECOND_IN_MILLIS)
+                .start();
     }
 
     @Override
@@ -69,4 +84,5 @@ public class SplashActivty extends BaseActivity implements SplashView {
     public ImageView getBgView() {
         return splashImage;
     }
+
 }

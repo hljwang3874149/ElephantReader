@@ -2,7 +2,7 @@ package reader.simple.com.simple_reader.presenter.impl;
 
 import android.content.Context;
 
-import reader.simple.com.simple_reader.common.Util;
+import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.interactor.AboutInteractor;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.viewInterface.AboutView;
@@ -34,7 +34,7 @@ public class AboutPresenter implements Presenter {
         mViewInterface.setCameraDistance(mHelper.getCaneraDistance(context));
 
         mViewInterface.startAnimatorset();
-        mViewInterface.setVersion(Util.getVersion(context));
+        mViewInterface.setVersion(Utils.getVersion(context));
     }
 
 }

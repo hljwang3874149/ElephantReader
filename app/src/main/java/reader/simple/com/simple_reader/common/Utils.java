@@ -5,13 +5,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 
-/**
- * Created by hugo on 2016/2/20 0020.
- */
-public class Util {
+public class Utils {
 
 
     /**
@@ -68,4 +68,52 @@ public class Util {
         }
         return false;
     }
+
+    public static void hideInputMethod(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showSoftKeyboard(Context context, View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context
+                    .INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
+    /**
+     * 获取活动的连接。
+     *
+     * @param context
+     *         context
+     * @return 当前连接
+     */
+    public static NetworkInfo getActiveNetworkInfo(Context context) {
+        if (context == null) {
+            return null;
+        }
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return null;
+        }
+        return connectivity.getActiveNetworkInfo();
+    }
+
+    /**
+     * wifi网络是否可用
+     *
+     * @param context
+     *         context
+     * @return wifi连接并可用返回 true
+     */
+    public static boolean isWifiNetworkConnected(Context context) {
+        NetworkInfo networkInfo = getActiveNetworkInfo(context);
+
+        return networkInfo != null && networkInfo.isAvailable()
+                && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
 }

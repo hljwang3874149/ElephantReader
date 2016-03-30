@@ -1,24 +1,29 @@
 package reader.simple.com.simple_reader.ui.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
+import reader.simple.com.simple_reader.ui.activity.adapter.MainDrawerAdapter;
 import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 
-    @InjectView(R.id.fab)
-    FloatingActionButton fab;
+    @InjectView(R.id.slide_content)
+    ListView slideContentList;
+    @InjectView(R.id.main_drawer)
+    DrawerLayout mainDrawer;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.button)
-    Button button;
 
     @Override
     protected boolean pendingTransition() {
@@ -37,28 +42,43 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewsAndEvents() {
+        ActionBarDrawerToggle barDrawerToggle = new ActionBarDrawerToggle(this, mainDrawer,
+                toolbar, R.string.app_name,
+                R.string.app_name) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
 
-        fab.setOnClickListener(view -> {
-            button.animate()
-                    .alpha(0f)
-                    .scaleX(0f)
-                    .scaleY(0f)
-                    .setDuration(500)
-                    .setInterpolator(new FastOutLinearInInterpolator())
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            button.animate()
-                                    .alpha(1f)
-                                    .scaleY(1f)
-                                    .scaleX(1f)
-                                    .setDuration(500)
-                                    .start();
-                        }
-                    }).start();
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
 
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                super.onDrawerStateChanged(newState);
+                if (newState == DrawerLayout.STATE_SETTLING) {
+                    slideContentList.startLayoutAnimation();
                 }
-        );
+            }
+        };
+        mainDrawer.setDrawerListener(barDrawerToggle);
+        barDrawerToggle.syncState();
+
+        String[] TEST = {"设置", "关于", "夜间模式", "白天模式"};
+        List data = new ArrayList<>();
+        Collections.addAll(data, TEST);
+        MainDrawerAdapter mainDrawerAdapter = new MainDrawerAdapter(this, data);
+
+        slideContentList.setAdapter(mainDrawerAdapter);
+        slideContentList.setOnItemClickListener((adapterView, view, i, l) -> {
+            showToastMessage((String) adapterView.getAdapter().getItem(i));
+            mainDrawer.closeDrawer(slideContentList);
+        });
+
     }
 
 }
