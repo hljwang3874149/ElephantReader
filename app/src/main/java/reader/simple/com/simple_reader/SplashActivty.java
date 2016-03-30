@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.presenter.Presenter;
-import reader.simple.com.simple_reader.presenter.SplashPresenter;
+import reader.simple.com.simple_reader.presenter.impl.SplashPresenter;
 import reader.simple.com.simple_reader.viewInterface.SplashView;
 
 
@@ -60,6 +60,7 @@ public class SplashActivty extends BaseActivity implements SplashView {
     public void navigateHome() {
         startActivityWithIntent(new Intent(this, MainActivity.class));
         finish();
+
     }
 
     @Override

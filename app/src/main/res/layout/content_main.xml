@@ -8,5 +8,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="reader.simple.com.simple_reader.MainActivity"
     tools:showIn="@layout/activity_main">
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fab"
+        android:background="@color/colorAccent"/>
 
 </RelativeLayout>

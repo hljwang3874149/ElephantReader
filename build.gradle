@@ -1,13 +1,25 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+def retrofitVersion = "2.0.0-beta4"
+def supportVersion = "23.1.1"
+
+def leakCanaryVersion = "1.3.1"
+def blockCanaryVersion = '1.1.4'
+
+def ankoVersion = '0.8.3'
+def kotlin_version = '1.0.1-1'
+
+
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-alpha3'
+        classpath 'com.android.tools.build:gradle:2.1.0-alpha4'
         classpath 'me.tatarka:gradle-retrolambda:3.2.4'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.1-1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -16,6 +28,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         jcenter()
     }
 }
@@ -24,11 +37,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-def retrofitVersion = "2.0.0-beta4"
-def supportVersion = "23.1.1"
 
-def leakCanaryVersion = "1.3.1"
-def blockCanaryVersion = '1.1.4'
 
 project.ext {
 
@@ -50,7 +59,14 @@ project.ext {
     libRetrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
     libOkHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.0.0-RC1"
 
-
+    libKotlin = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    libAnkoSdk = "org.jetbrains.anko:anko-sdk15:${ankoVersion}"
+    libAnkoSdkv4 = "org.jetbrains.anko:anko-support-v4:${ankoVersion}"
+    libAnkoSdkv7 = "rg.jetbrains.anko:anko-appcompat-v7:${ankoVersion}"
+//    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    compile 'org.jetbrains.anko:anko-sdk15:0.8.3' // sdk19, sdk21, sdk23 are also available
+//    compile 'org.jetbrains.anko:anko-support-v4:0.8.3' // In case you need support-v4 bindings
+//    compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3' // For appcompat-v7 bindings
     libGlide = "com.github.bumptech.glide:glide:3.7.0"
     debugDependencies = [
             leakCanary : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",

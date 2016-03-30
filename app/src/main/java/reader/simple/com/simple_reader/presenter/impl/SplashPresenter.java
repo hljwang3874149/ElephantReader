@@ -1,4 +1,4 @@
-package reader.simple.com.simple_reader.presenter;
+package reader.simple.com.simple_reader.presenter.impl;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.common.DeviceUtil;
 import reader.simple.com.simple_reader.interactor.SplashInteractor;
+import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.viewInterface.SplashView;
 
 /**

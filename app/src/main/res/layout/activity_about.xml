@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="reader.simple.com.simple_reader.AboutActivity">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="?attr/colorPrimary"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/about_version"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:alpha="0"
+            android:text="@string/current.version"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/about_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/welcome"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+
+    </FrameLayout>
+</LinearLayout>

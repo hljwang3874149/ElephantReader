@@ -1,9 +1,11 @@
 package reader.simple.com.simple_reader;
 
-import android.os.Bundle;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 
 import butterknife.InjectView;
 
@@ -11,6 +13,10 @@ public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.fab)
     FloatingActionButton fab;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
+    @InjectView(R.id.button)
+    Button button;
 
     @Override
     protected boolean pendingTransition() {
@@ -29,14 +35,28 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewsAndEvents() {
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action",
-                Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
 
+        fab.setOnClickListener(view -> {
+            button.animate()
+                    .alpha(0f)
+                    .scaleX(0f)
+                    .scaleY(0f)
+                    .setDuration(500)
+                    .setInterpolator(new FastOutLinearInInterpolator())
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            button.animate()
+                                    .alpha(1f)
+                                    .scaleY(1f)
+                                    .scaleX(1f)
+                                    .setDuration(500)
+                                    .start();
+                        }
+                    }).start();
+
+                }
+        );
     }
 
-    @Override
-    protected void doBeforeSetContentView() {
-
-    }
 }
