@@ -3,20 +3,21 @@ package reader.simple.com.simple_reader;
 import android.app.Application;
 import android.content.Context;
 
+import com.github.moduth.blockcanary.BlockCanary;
+import com.squareup.leakcanary.LeakCanary;
+
 import reader.simple.com.simple_reader.common.ACache;
 import reader.simple.com.simple_reader.common.CrashHandler;
 
 
-/**
- * Created by xcc on 2015/12/16.
- */
 public class BaseApplication extends Application {
 
     public static String cacheDir = "";
     public static Context mAppContext = null;
 
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
         mAppContext = getApplicationContext();
         // 初始化 retrofit
@@ -29,18 +30,19 @@ public class BaseApplication extends Application {
         if (getApplicationContext().getExternalCacheDir() != null && ExistSDCard()) {
             cacheDir = getApplicationContext().getExternalCacheDir().getAbsolutePath();
 
-        }
-        else {
+        } else {
             cacheDir = getApplicationContext().getCacheDir().toString();
         }
+        LeakCanary.install(this);
+        BlockCanary.install(this, new AppBlockCanaryContext()).start();
     }
 
 
     private boolean ExistSDCard() {
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment
+                .MEDIA_MOUNTED)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
