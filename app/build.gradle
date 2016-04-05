@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -25,9 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
 }
 
 dependencies {
@@ -36,10 +32,11 @@ dependencies {
 
     compile rootProject.ext.libRxJava
     compile rootProject.ext.libRxAndroid
-    compile rootProject.ext.libEventBus
     compile rootProject.ext.libRetrofit
     compile rootProject.ext.libRetrofitConverterGson
     compile rootProject.ext.libRetrofitAdapterRxJava
+
+    compile rootProject.ext.libEventBus
 
     compile rootProject.ext.libGlide
     compile rootProject.ext.libButterKinfe
@@ -49,9 +46,9 @@ dependencies {
     compile rootProject.ext.libSupportDesign
     compile rootProject.ext.libSupportRecyclerview
     compile rootProject.ext.debugDependencies.leakCanary
-    compile rootProject.ext.libKotlin
     compile rootProject.ext.libRipple
 
+    compile 'jp.wasabeef:recyclerview-animators:2.2.1'
     compile 'com.github.moduth:blockcanary-ui:1.2.0'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'

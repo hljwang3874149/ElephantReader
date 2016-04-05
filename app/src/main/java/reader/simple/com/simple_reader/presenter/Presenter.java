@@ -1,5 +1,7 @@
 package reader.simple.com.simple_reader.presenter;
 
+import android.support.design.widget.FloatingActionButton;
+
 /**
  * ==================================================
  * 项目名称：Simple_Reader
@@ -12,4 +14,5 @@ package reader.simple.com.simple_reader.presenter;
  */
 public interface Presenter {
     void initialized();
+
 }

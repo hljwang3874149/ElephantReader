@@ -6,11 +6,12 @@
     <string name="title_activity_main">simple_reader</string>
     <string name="welcome">欢迎使用</string>
     <string name="current.version">当前版本：%s</string>
+    <string name="arcticle_read">阅读量: %s</string>
     <string-array name="main_testdata">
-    <item>第一条</item>
-    <item>第二条</item>
-    <item>第三条</item>
-    <item>第四条</item>
-    <item>第五条</item>
+        <item>第一条</item>
+        <item>第二条</item>
+        <item>第三条</item>
+        <item>第四条</item>
+        <item>第五条</item>
     </string-array>
 </resources>

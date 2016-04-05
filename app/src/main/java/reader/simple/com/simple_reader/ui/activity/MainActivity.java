@@ -1,7 +1,5 @@
 package reader.simple.com.simple_reader.ui.activity;
 
-import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,15 +14,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.animator.ItemAnimatorFactory;
+import reader.simple.com.simple_reader.common.ACache;
+import reader.simple.com.simple_reader.common.Utils;
+import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
+import reader.simple.com.simple_reader.domain.PageInfo;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.presenter.impl.MainPresenter;
-import reader.simple.com.simple_reader.ui.activity.adapter.MainDrawerAdapter;
-import reader.simple.com.simple_reader.ui.activity.adapter.MainRecylerViewAdapter;
 import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
+import reader.simple.com.simple_reader.ui.adapter.MainDrawerAdapter;
+import reader.simple.com.simple_reader.ui.adapter.MainRecylerViewAdapter;
 import reader.simple.com.simple_reader.viewInterface.MainView;
 
 public class MainActivity extends BaseActivity implements MainView {
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity implements MainView {
     SwipeRefreshLayout mainSwipeFreshlayout;
     private Presenter mPresenter;
     private MainRecylerViewAdapter mRecylerAdapter;
+    private ACache mACahe;
+    private static final String KEY_PAGEINFOS = "articles";
 
     @Override
     protected boolean pendingTransition() {
@@ -59,6 +62,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     protected void initViewsAndEvents() {
+        mACahe = ACache.get(this);
         ActionBarDrawerToggle barDrawerToggle = new ActionBarDrawerToggle(this, mainDrawer,
                 toolbar, R.string.app_name,
                 R.string.app_name) {
@@ -105,25 +109,54 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void initSwipeFreshView() {
         mainSwipeFreshlayout.setOnRefreshListener(() -> {
-            //todo  refresh things
-
+            getArticleInfos(0);
         });
 
     }
 
     @Override
     public void initRecyclerView() {
-        new Handler().postDelayed(() -> {
-            List<String> data = new ArrayList<>();
-            Collections.addAll(data, getResources().getStringArray(R.array.main_testdata));
 
-            mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mainRecyclerView.setItemAnimator(ItemAnimatorFactory.slideIn());
+        List<String> data = new ArrayList<>();
+//        Collections.addAll(data, getResources().getStringArray(R.array.main_testdata));
 
-            mRecylerAdapter = new MainRecylerViewAdapter(this);
-            mainRecyclerView.setAdapter(mRecylerAdapter);
-            mRecylerAdapter.setItems(data);
+        mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mainRecyclerView.setItemAnimator(ItemAnimatorFactory.slideIn());
+//        mainRecyclerView.addItemDecoration(new GridDividerDecoration(this));
+        mRecylerAdapter = new MainRecylerViewAdapter(this);
+        mainRecyclerView.setAdapter(mRecylerAdapter);
+        PageInfo pageInfo = (PageInfo) mACahe.getAsObject(KEY_PAGEINFOS);
+        if (null != pageInfo) {
+            mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+        } else {
+            getArticleInfos(0);
+        }
 
-        }, DateUtils.SECOND_IN_MILLIS);
+    }
+
+    protected void getArticleInfos(int pageNum) {
+        if(Utils.isNetworkConnected(this)){
+            RetrofitNetWork.getInstance().getPageInfos(20, pageNum)
+                    .subscribe(pageInfo -> {
+                                if (pageNum == 0) {
+                                    mRecylerAdapter.clear();
+                                    //仅存储最新20条，有效时间2小时
+                                    mACahe.put(KEY_PAGEINFOS, pageInfo, (int) (DateUtils
+                                            .HOUR_IN_MILLIS *
+                                            2));
+                                }
+                                mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+                            }
+                            , throwable -> {
+                                showSnackMessage(mainRecyclerView, throwable.getMessage());
+                            }
+                            , () -> {
+                                if (mainSwipeFreshlayout != null && mainSwipeFreshlayout.isRefreshing
+                                        ()) {
+                                    mainSwipeFreshlayout.setRefreshing(false);
+                                }
+                            });
+        }
+
     }
 }

@@ -6,4 +6,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="left_drawer_text_color">#4c4c4c</color>
+    <color name="lighter_gray">#ddd</color>
+    <color name="common_bg">#fcfcfc</color>
+    <color name="common_bg_press">#a8a8a8</color>
 </resources>

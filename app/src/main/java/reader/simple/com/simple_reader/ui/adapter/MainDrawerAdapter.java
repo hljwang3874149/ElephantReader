@@ -1,4 +1,4 @@
-package reader.simple.com.simple_reader.ui.activity.adapter;
+package reader.simple.com.simple_reader.ui.adapter;
 
 import android.content.Context;
 import android.view.View;

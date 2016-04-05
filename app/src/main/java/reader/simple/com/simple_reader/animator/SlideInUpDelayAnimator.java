@@ -16,7 +16,6 @@ import android.view.animation.Interpolator;
  * ==================================================
  */
 public class SlideInUpDelayAnimator extends MyBaseItemAnimtor {
-    private final  int offsetDelay = 220;
     private Interpolator mInterpolator;
 
     public SlideInUpDelayAnimator(Interpolator mInterpolator) {
@@ -24,17 +23,40 @@ public class SlideInUpDelayAnimator extends MyBaseItemAnimtor {
     }
 
     @Override
+    protected void onAnimateRemoveImpl(RecyclerView.ViewHolder holder) {
+        ViewCompat.animate(holder.itemView)
+                .setDuration(getRemoveDuration())
+                .alpha(0)
+                .scaleX(0f)
+                .scaleY(0f)
+                .setDuration(getRemoveDuration())
+                .setStartDelay(getRemoveDelay(holder))
+                .setListener(getDefaultVpaListener(holder)).start();
+    }
+
+    @Override
+    protected void preAnimateRemove(RecyclerView.ViewHolder holder) {
+        super.preAnimateRemove(holder);
+    }
+
+    @Override
     protected void preAnimateAdd(RecyclerView.ViewHolder holder) {
-        ViewCompat.setTranslationY(holder.itemView , holder.itemView.getHeight());
+        ViewCompat.setTranslationY(holder.itemView, holder.itemView.getHeight());
         ViewCompat.setAlpha(holder.itemView, 0);
+        ViewCompat.setScaleX(holder.itemView, 0.3F);
+        ViewCompat.setScaleY(holder.itemView, 0.3f);
     }
 
     @Override
     protected ViewPropertyAnimatorCompat onAnimateAdd(RecyclerView.ViewHolder holder) {
         return ViewCompat.animate(holder.itemView)
                 .translationY(0)
+                .alpha(1)
+                .scaleX(1.0f)
+                .scaleY(1.0f)
                 .setInterpolator(mInterpolator)
-                .setStartDelay(offsetDelay * holder.getLayoutPosition());
+                .setDuration(getAddDuration())
+                .setStartDelay(getAddDelay(holder));
 
     }
 }
