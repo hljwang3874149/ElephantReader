@@ -1,9 +1,5 @@
 <resources>
-    <string name="app_name">Simple_Reader</string>
-
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">大象阅</string>
-    <string name="title_activity_main">simple_reader</string>
+    <string name="app_name">阅·大象</string>
     <string name="welcome">欢迎使用</string>
     <string name="current.version">当前版本：%s</string>
     <string name="arcticle_read">阅读量: %s</string>

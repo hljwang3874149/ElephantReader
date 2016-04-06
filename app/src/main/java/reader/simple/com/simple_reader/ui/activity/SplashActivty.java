@@ -7,7 +7,9 @@ import android.support.v4.view.ViewCompat;
 import android.text.format.DateUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +60,8 @@ public class SplashActivty extends BaseActivity implements SplashView {
                 .scaleY(1.0f)
                 .translationY(-100)
                 .alpha(1f)
-                .setInterpolator(new BounceInterpolator())
-                .setStartDelay((long) (DateUtils.SECOND_IN_MILLIS*0.5))
+                .setInterpolator(new OvershootInterpolator())
+                .setStartDelay(DateUtils.SECOND_IN_MILLIS)
                 .setDuration(DateUtils.SECOND_IN_MILLIS)
                 .start();
     }

@@ -24,7 +24,7 @@ public class SplashInteractor {
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         try {
             mBitmap = BitmapFactory.decodeStream(context.getResources().getAssets().open
-                    ("splash/spalsh_background.jpg"), null, options);
+                    ("splash/splash_background.jpg"), null, options);
         } catch (IOException e) {
             mBitmap = null;
             e.printStackTrace();

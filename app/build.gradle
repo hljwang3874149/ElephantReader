@@ -48,9 +48,7 @@ dependencies {
     compile rootProject.ext.debugDependencies.leakCanary
     compile rootProject.ext.libRipple
 
-    compile 'jp.wasabeef:recyclerview-animators:2.2.1'
     compile 'com.github.moduth:blockcanary-ui:1.2.0'
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'

@@ -2,7 +2,6 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:tools="http://schemas.android.com/tools"
-             android:background="#0099cc"
     >
 
     <ImageView
@@ -18,9 +17,9 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="#802a3e"
-        android:textSize="20sp"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="34sp"
         android:textStyle="bold"
         android:scaleX="0"
         android:scaleY="0"
