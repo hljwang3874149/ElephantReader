@@ -60,7 +60,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         doBeforeSetContentView();
         setContentView(getContentViewLayoutID());
+        doAfterSetContentView();
         initViewsAndEvents();
+    }
+
+    protected void doAfterSetContentView() {
+
     }
 
     @Override
@@ -158,8 +163,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
         ButterKnife.reset(this);
+    }
+    protected  void doOnDestroy(){
+
     }
 
     public void startActivityWithIntent(Intent intent) {

@@ -29,13 +29,11 @@ import reader.simple.com.simple_reader.viewInterface.WebTextView;
  * ==================================================
  */
 public class WebTextPresenter implements Presenter {
-    private Context mContext;
     private WebTextView mView;
     private String artcleID;
     private ACache mAcache;
 
     public WebTextPresenter(Context mContext, WebTextView mView, String artcleID) {
-        this.mContext = mContext;
         this.mView = mView;
         this.artcleID = artcleID;
         mAcache = ACache.get(mContext);
@@ -58,13 +56,10 @@ public class WebTextPresenter implements Presenter {
                         mView.hideLoadingView();
                     });
         } else {
-
             mView.getArticleInfo(mAcache.getAsString(artcleID));
             mView.hideLoadingView();
 
         }
-
-
     }
 
     public void startAnimator(FloatingActionButton fab, ViewPropertyAnimatorListenerAdapter
@@ -83,6 +78,11 @@ public class WebTextPresenter implements Presenter {
                 .alpha(0f).setInterpolator(new DecelerateInterpolator(1.2f))
                 .setListener(adapter)
                 .start();
+    }
 
+    public void clear() {
+        artcleID = null;
+        mAcache = null;
+        mView = null;
     }
 }

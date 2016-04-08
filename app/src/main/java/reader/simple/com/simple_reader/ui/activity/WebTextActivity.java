@@ -7,12 +7,14 @@ import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 
 import butterknife.InjectView;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.DeviceUtil;
 import reader.simple.com.simple_reader.presenter.impl
         .WebTextPresenter;
 import reader.simple.com.simple_reader.ui.activity.base
         .BaseActivity;
+import reader.simple.com.simple_reader.ui.activity.base.BaseSwipeActivity;
 import reader.simple.com.simple_reader.ui.webView
         .ArticleWebView;
 import reader.simple.com.simple_reader.ui.webView
@@ -20,7 +22,7 @@ import reader.simple.com.simple_reader.ui.webView
 import reader.simple.com.simple_reader.viewInterface
         .WebTextView;
 
-public class WebTextActivity extends BaseActivity
+public class WebTextActivity extends BaseSwipeActivity
         implements WebTextView {
     @InjectView(R.id.webView)
     ArticleWebView webView;
@@ -30,7 +32,6 @@ public class WebTextActivity extends BaseActivity
     FloatingActionButton fab;
     private WebTextPresenter mPresenter;
     private int mScreenHight;
-
     private boolean isShowFab;
 
     @Override
@@ -78,7 +79,7 @@ public class WebTextActivity extends BaseActivity
 
                 });
 
-        webView.setWebViewClient(new HtmlWebClient(this));
+        webView.setWebViewClient(new HtmlWebClient());
         fab.setOnClickListener(v -> {
             scrollView.smoothScrollTo(0, 10);
         });
@@ -88,8 +89,7 @@ public class WebTextActivity extends BaseActivity
 
     @Override
     public void getArticleInfo(String info) {
-        webView.loadDataWithBaseURL("", info,
-                "text/html", "utf-8", null);
+        webView.loadDataWithBaseURL("", info, "text/html", "utf-8", null);
 
     }
 
@@ -100,6 +100,14 @@ public class WebTextActivity extends BaseActivity
     }
 
     @Override
+    protected void doOnDestroy() {
+        if (null != mPresenter) {
+            mPresenter.clear();
+            mPresenter = null;
+        }
+    }
+
+    @Override
     public void hideLoadingView() {
 
     }
@@ -107,5 +115,15 @@ public class WebTextActivity extends BaseActivity
     @Override
     public void showLoadingView() {
 
+    }
+
+    @Override
+    protected int getSwipeBackLayoutTracking() {
+        return SwipeBackLayout.EDGE_LEFT;
+    }
+
+    @Override
+    protected boolean getSwipeBackLayoutEnabled() {
+        return true;
     }
 }

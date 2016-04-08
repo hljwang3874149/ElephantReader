@@ -170,7 +170,8 @@ public class MainActivity extends BaseActivity implements
         if (null != pageInfo) {
             mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
         } else {
-            mSwipeFreshlayout.setProgressViewOffset(false, toolbar.getHeight(), toolbar.getHeight() + DeviceUtil.dip2px(this, 30));
+            mSwipeFreshlayout.setProgressViewOffset(false, toolbar.getHeight(), DeviceUtil.dip2px(this, 20));
+            mSwipeFreshlayout.setRefreshing(true);
             getArticleInfos(0);
         }
 

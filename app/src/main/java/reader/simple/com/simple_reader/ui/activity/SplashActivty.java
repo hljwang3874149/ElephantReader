@@ -60,9 +60,9 @@ public class SplashActivty extends BaseActivity implements SplashView {
                 .scaleY(1.0f)
                 .translationY(-100)
                 .alpha(1f)
-                .setInterpolator(new OvershootInterpolator())
+                .setInterpolator(new BounceInterpolator())
                 .setStartDelay(DateUtils.SECOND_IN_MILLIS)
-                .setDuration(DateUtils.SECOND_IN_MILLIS)
+                .setDuration(DateUtils.SECOND_IN_MILLIS * 2)
                 .start();
     }
 

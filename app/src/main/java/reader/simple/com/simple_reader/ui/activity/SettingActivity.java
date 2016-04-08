@@ -1,9 +1,5 @@
 package reader.simple.com.simple_reader.ui.activity;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-
-import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 

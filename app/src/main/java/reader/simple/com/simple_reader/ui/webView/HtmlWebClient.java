@@ -29,74 +29,18 @@ import reader.simple.com.simple_reader.common.DebugUtil;
  * ==================================================
  */
 public class HtmlWebClient extends WebViewClient {
-    Context activity;
-    public HtmlWebClient(Context activity) {
-        this.activity = activity;
+    public HtmlWebClient() {
     }
 
     @Override
     public void onPageCommitVisible(WebView view, String url) {
         super.onPageCommitVisible(view, url);
-        DebugUtil.e("url  " + url);
-        Glide.with(activity).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(new Target<GlideDrawable>() {
-            @Override
-            public void onLoadStarted(Drawable placeholder) {
-
-            }
-
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-
-            }
-
-            @Override
-            public void onLoadCleared(Drawable placeholder) {
-
-            }
-
-            @Override
-            public void getSize(SizeReadyCallback cb) {
-
-            }
-
-            @Override
-            public void setRequest(Request request) {
-
-            }
-
-            @Override
-            public Request getRequest() {
-                return null;
-            }
-
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onStop() {
-
-            }
-
-            @Override
-            public void onDestroy() {
-
-            }
-        });
 
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        DebugUtil.e("onPageFinished url  " + url);
-        Glide.with(activity).load(url);
     }
 
     @Override

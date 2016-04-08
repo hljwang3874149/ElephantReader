@@ -37,6 +37,7 @@ public class SplashPresenter implements Presenter {
         this.splashView = splashView;
         interactor = new SplashInteractor();
     }
+
     @Override
     public void initialized() {
         DebugUtil.e("initialized");
@@ -48,8 +49,6 @@ public class SplashPresenter implements Presenter {
         } else {
             mainHandler.postDelayed(() -> {
                         splashView.navigateHome();
-                        assert bitmap != null;
-                        bitmap.recycle();
                     }
                     , 1000);
         }
@@ -58,7 +57,7 @@ public class SplashPresenter implements Presenter {
     private void setAnimation(ImageView bgView) {
         ObjectAnimator animatorRight = ObjectAnimator.ofFloat(bgView, "translationX", 0, DeviceUtil
                 .getScreenWidth(ctx) - DeviceUtil.dip2px(ctx, 1000));
-        animatorRight.setDuration(3000)
+        animatorRight.setDuration(2000)
                 .setRepeatCount(1);
         animatorRight.setRepeatMode(ObjectAnimator.REVERSE);
         animatorRight.start();
