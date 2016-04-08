@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<reader.simple.com.simple_reader.ui.widget.DragViewLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="reader.simple.com.simple_reader.ui.activity.SettingActivity">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <!--<include layout="@layout/content_setting"/>-->
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher"/>
+
+
+</reader.simple.com.simple_reader.ui.widget.DragViewLayout>

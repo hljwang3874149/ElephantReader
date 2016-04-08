@@ -45,8 +45,8 @@ dependencies {
     compile rootProject.ext.libSupportV4
     compile rootProject.ext.libSupportDesign
     compile rootProject.ext.libSupportRecyclerview
-    compile rootProject.ext.debugDependencies.leakCanary
     compile rootProject.ext.libRipple
+    compile rootProject.ext.libSwipeBack
 
     compile 'com.github.moduth:blockcanary-ui:1.2.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'

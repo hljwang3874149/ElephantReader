@@ -10,4 +10,5 @@
         <item>第四条</item>
         <item>第五条</item>
     </string-array>
+    <string name="title_activity_setting">SettingActivity</string>
 </resources>

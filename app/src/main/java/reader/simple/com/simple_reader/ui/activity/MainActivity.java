@@ -1,10 +1,10 @@
 package reader.simple.com.simple_reader.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +21,7 @@ import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.animator
         .ItemAnimatorFactory;
 import reader.simple.com.simple_reader.common.ACache;
+import reader.simple.com.simple_reader.common.DeviceUtil;
 import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.common.netWork
         .RetrofitNetWork;
@@ -49,7 +50,7 @@ public class MainActivity extends BaseActivity implements
     @InjectView(R.id.main_recycler_view)
     RecyclerView mainRecyclerView;
     @InjectView(R.id.main_swipe_freshlayout)
-    SwipeRefreshLayout mainSwipeFreshlayout;
+    SwipeRefreshLayout mSwipeFreshlayout;
     private Presenter mPresenter;
     private MainRecylerViewAdapter mRecylerAdapter;
     private ACache mACahe;
@@ -111,9 +112,13 @@ public class MainActivity extends BaseActivity implements
 
         slideContentList.setAdapter(mainDrawerAdapter);
         slideContentList.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (1 == i) {
-                startActivity(new Intent(this,
-                        AboutActivity.class));
+            switch (i) {
+                case 0:
+                    startActivity(new Intent(this, SettingActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(this, AboutActivity.class));
+                    break;
             }
 //            switch (AppCompatDelegate
 //                    .getDefaultNightMode()) {
@@ -147,7 +152,8 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void initSwipeFreshView() {
-        mainSwipeFreshlayout.setOnRefreshListener(() -> {
+        mSwipeFreshlayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), Color.RED, Color.BLUE, Color.GRAY);
+        mSwipeFreshlayout.setOnRefreshListener(() -> {
             getArticleInfos(0);
         });
 
@@ -164,6 +170,7 @@ public class MainActivity extends BaseActivity implements
         if (null != pageInfo) {
             mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
         } else {
+            mSwipeFreshlayout.setProgressViewOffset(false, toolbar.getHeight(), toolbar.getHeight() + DeviceUtil.dip2px(this, 30));
             getArticleInfos(0);
         }
 
@@ -184,8 +191,8 @@ public class MainActivity extends BaseActivity implements
                                 showSnackMessage(mainRecyclerView, throwable.getMessage());
                             }
                             , () -> {
-                                if (mainSwipeFreshlayout != null && mainSwipeFreshlayout.isRefreshing()) {
-                                    mainSwipeFreshlayout.setRefreshing(false);
+                                if (mSwipeFreshlayout != null && mSwipeFreshlayout.isRefreshing()) {
+                                    mSwipeFreshlayout.setRefreshing(false);
                                 }
                             });
         }

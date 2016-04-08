@@ -63,13 +63,5 @@ project.ext {
     libRipple = "com.balysv:material-ripple:1.0.2"
 
     libGlide = "com.github.bumptech.glide:glide:3.7.0"
-    debugDependencies = [
-            leakCanary : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
-            blockcanary: "com.github.moduth:blockcanary-ui:${blockCanaryVersion}",
-    ]
-
-    releaseDependencies = [
-            leakCanary : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
-            blockcanary: "com.github.moduth:blockcanary-no-op:${blockCanaryVersion}",
-    ]
+    libSwipeBack = "me.imid.swipebacklayout.lib:library:1.0.0"
 }

@@ -26,8 +26,7 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name"
-          >
+            android:label="@string/app_name">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN"/> -->
@@ -37,6 +36,11 @@
         <activity android:name=".ui.activity.AboutActivity">
         </activity>
         <activity android:name=".ui.activity.WebTextActivity">
+        </activity>
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme">
         </activity>
     </application>
 

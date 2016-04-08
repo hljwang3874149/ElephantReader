@@ -95,6 +95,7 @@ public class WebTextActivity extends BaseActivity
 
     @Override
     public void showThrowMessage(String msg) {
+
         showToastMessage(msg);
     }
 

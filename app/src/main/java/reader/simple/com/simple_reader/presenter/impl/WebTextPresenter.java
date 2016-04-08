@@ -7,9 +7,12 @@ import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.ViewPropertyAnimatorUpdateListener;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import reader.simple.com.simple_reader.common.ACache;
 import reader.simple.com.simple_reader.common.ArticleUtil;
 import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
 import reader.simple.com.simple_reader.presenter.Presenter;
@@ -29,26 +32,37 @@ public class WebTextPresenter implements Presenter {
     private Context mContext;
     private WebTextView mView;
     private String artcleID;
+    private ACache mAcache;
 
     public WebTextPresenter(Context mContext, WebTextView mView, String artcleID) {
         this.mContext = mContext;
         this.mView = mView;
         this.artcleID = artcleID;
+        mAcache = ACache.get(mContext);
     }
 
     @Override
     public void initialized() {
         mView.showLoadingView();
-        RetrofitNetWork.getInstance().getArticleDescInfo(artcleID)
-                .subscribe(articleDescInfo -> {
-                    mView.getArticleInfo(ArticleUtil.formatBody(articleDescInfo.articleBody
-                            .articleInfo));
-                }, throwable -> {
-                    mView.showThrowMessage(throwable.getMessage());
+        if (TextUtils.isEmpty(mAcache.getAsString(artcleID))) {
+            RetrofitNetWork.getInstance().getArticleDescInfo(artcleID)
+                    .subscribe(articleDescInfo -> {
+                        String artcle = ArticleUtil.formatBody(articleDescInfo.articleBody
+                                .articleInfo);
+                        mView.getArticleInfo(artcle);
+                        mAcache.put(artcleID, artcle, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
+                    }, throwable -> {
+                        mView.showThrowMessage(throwable.getMessage());
 
-                }, () -> {
-                    mView.hideLoadingView();
-                });
+                    }, () -> {
+                        mView.hideLoadingView();
+                    });
+        } else {
+
+            mView.getArticleInfo(mAcache.getAsString(artcleID));
+            mView.hideLoadingView();
+
+        }
 
 
     }
@@ -64,7 +78,7 @@ public class WebTextPresenter implements Presenter {
 
     }
 
-    public void hideAnimator(FloatingActionButton fab , ViewPropertyAnimatorListenerAdapter adapter) {
+    public void hideAnimator(FloatingActionButton fab, ViewPropertyAnimatorListenerAdapter adapter) {
         ViewCompat.animate(fab).scaleX(0f).scaleY(0f).setDuration(200)
                 .alpha(0f).setInterpolator(new DecelerateInterpolator(1.2f))
                 .setListener(adapter)
