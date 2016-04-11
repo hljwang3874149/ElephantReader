@@ -14,5 +14,4 @@ import android.support.design.widget.FloatingActionButton;
  */
 public interface Presenter {
     void initialized();
-
 }

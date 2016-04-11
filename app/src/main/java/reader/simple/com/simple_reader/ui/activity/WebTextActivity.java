@@ -4,12 +4,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view
         .ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.widget.NestedScrollView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import butterknife.InjectView;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.DeviceUtil;
+import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.presenter.impl
         .WebTextPresenter;
 import reader.simple.com.simple_reader.ui.activity.base
@@ -105,6 +109,27 @@ public class WebTextActivity extends BaseSwipeActivity
             mPresenter.clear();
             mPresenter = null;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_webtext_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.chrome_open:
+                Utils.startChrome(this, mPresenter.getPath());
+                return true;
+            case R.id.share_article:
+                Utils.shareArticleUrl(this, mPresenter.getPath());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @Override

@@ -11,4 +11,6 @@
         <item>第五条</item>
     </string-array>
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="chrome_open">浏览器打开</string>
+    <string name="share.title">分享</string>
 </resources>

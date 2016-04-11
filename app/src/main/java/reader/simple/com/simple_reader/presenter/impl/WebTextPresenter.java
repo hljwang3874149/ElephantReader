@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import reader.simple.com.simple_reader.common.ACache;
 import reader.simple.com.simple_reader.common.ArticleUtil;
+import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.viewInterface.WebTextView;
@@ -32,6 +33,7 @@ public class WebTextPresenter implements Presenter {
     private WebTextView mView;
     private String artcleID;
     private ACache mAcache;
+    private String mPath;
 
     public WebTextPresenter(Context mContext, WebTextView mView, String artcleID) {
         this.mView = mView;
@@ -48,7 +50,9 @@ public class WebTextPresenter implements Presenter {
                         String artcle = ArticleUtil.formatBody(articleDescInfo.articleBody
                                 .articleInfo);
                         mView.getArticleInfo(artcle);
+                        mPath = articleDescInfo.articleBody.articleInfo.wechatUrl;
                         mAcache.put(artcleID, artcle, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
+                        mAcache.put("Uri_" + artcleID, mPath, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
                     }, throwable -> {
                         mView.showThrowMessage(throwable.getMessage());
 
@@ -56,6 +60,7 @@ public class WebTextPresenter implements Presenter {
                         mView.hideLoadingView();
                     });
         } else {
+            mPath = mAcache.getAsString("Uri_" + artcleID);
             mView.getArticleInfo(mAcache.getAsString(artcleID));
             mView.hideLoadingView();
 
@@ -84,5 +89,9 @@ public class WebTextPresenter implements Presenter {
         artcleID = null;
         mAcache = null;
         mView = null;
+    }
+
+    public String getPath() {
+        return this.mPath;
     }
 }

@@ -33,7 +33,8 @@
         </activity>
         <activity
             android:name=".ui.activity.WebTextActivity"
-            />
+            >
+        </activity>
         <activity
             android:name=".ui.activity.SettingActivity"
             />

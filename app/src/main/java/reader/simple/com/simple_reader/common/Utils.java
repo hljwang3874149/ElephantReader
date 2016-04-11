@@ -1,11 +1,14 @@
 package reader.simple.com.simple_reader.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -114,6 +117,34 @@ public class Utils {
 
         return networkInfo != null && networkInfo.isAvailable()
                 && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    /**
+     * 启动默认浏览器
+     */
+
+    public static void startChrome(Context context, String url) {
+        if(TextUtils.isEmpty(url)){
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        DebugUtil.e("URL = " +url);
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        context.startActivity(intent);
+    }
+    /**
+     * share intent
+     */
+    public static void shareArticleUrl(Context ctx, String uri){
+        Intent intent = new Intent(Intent.ACTION_SEND); // 启动分享发送的属性
+        intent.setType("text/plain"); // 分享发送的数据类型
+        intent.putExtra(Intent.EXTRA_SUBJECT, "推荐大象公会精彩文章"); // 分享的主题
+        intent.putExtra(Intent.EXTRA_TEXT, "精彩博文：" + uri); // 分享的内容
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(Intent.createChooser(intent, "分享"));// 目标应用选择对话框的标题
+
     }
 
 }
