@@ -1,8 +1,12 @@
 package reader.simple.com.simple_reader.common.netWork;
 
+import android.content.Context;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import reader.simple.com.simple_reader.R;
+import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.domain.ArticleDescInfo;
 import reader.simple.com.simple_reader.domain.PageInfo;
 import retrofit2.Retrofit;
@@ -54,6 +58,19 @@ public class RetrofitNetWork {
 
     }
 
+
+    public static void catchThrowable(Context context, Throwable throwable) {
+        if (null == throwable) {
+            return;
+        }
+        if (null != throwable.getCause() && throwable.getCause().toString().contains("android.system.GaiException")) {
+            Utils.showToast(context, context.getString(R.string.network_error));
+        } else {
+            Utils.showToast(context, throwable.getMessage());
+        }
+
+    }
+
     public Observable<PageInfo> getPageInfos(int pageSize, int pageNum) {
         return mApiService.getPageInfos(pageSize, pageNum)
                 .subscribeOn(Schedulers.newThread())
@@ -62,6 +79,12 @@ public class RetrofitNetWork {
 
     public Observable<ArticleDescInfo> getArticleDescInfo(String articleId) {
         return mApiService.getArticleDescInfo(articleId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<PageInfo> loadMoreArticle(int pageSize, String createTime, String updateTime) {
+        return mApiService.loadMoreArticle(pageSize, createTime, updateTime)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

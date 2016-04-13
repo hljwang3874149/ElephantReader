@@ -35,8 +35,8 @@ public class ArticleInfo implements Serializable {
 //    public String url;
     @SerializedName("create_time")
     public String createTime;
-//    @SerializedName("update_time")
-//    public String updateTime;
+    @SerializedName("update_time")
+    public String updateTime;
     @SerializedName("content")
     public String content;
 

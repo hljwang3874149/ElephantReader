@@ -17,4 +17,5 @@ public class Constants {
 
     public static final String LOADING = "加载中....";
     public static final String NONELOAD = "全部加载完成";
+    public static final String NET_ERROR = "加载异常";
 }

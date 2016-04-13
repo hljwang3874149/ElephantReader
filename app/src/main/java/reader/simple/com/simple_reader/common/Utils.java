@@ -7,11 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 
 public class Utils {
@@ -148,4 +147,9 @@ public class Utils {
 
     }
 
+    public static void showToast(Context ctx ,String msg) {
+        if(!TextUtils.isEmpty(msg)){
+            Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

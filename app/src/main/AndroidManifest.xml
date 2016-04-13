@@ -39,6 +39,9 @@
             android:label="@string/title_activity_show_notify"
             android:theme="@style/SwipeBackTheme">
         </activity>
+        <activity android:name=".ui.activity.TestDrawActivity">
+
+        </activity>
     </application>
 
 </manifest>

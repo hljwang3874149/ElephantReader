@@ -14,4 +14,6 @@
     <string name="chrome_open">浏览器打开</string>
     <string name="share.title">分享</string>
     <string name="title_activity_show_notify">ShowNotifyActivity</string>
+    <string name="test.view">测试页面</string>
+    <string name="network_error">网络异常，请检查网络</string>
 </resources>

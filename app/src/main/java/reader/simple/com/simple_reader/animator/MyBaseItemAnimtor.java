@@ -1,7 +1,6 @@
 package reader.simple.com.simple_reader.animator;
 
 import android.support.annotation.NonNull;
-import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
@@ -187,6 +186,7 @@ public class MyBaseItemAnimtor extends SimpleItemAnimator {
 
     /**
      * do things before remove
+     *
      * @param holder
      */
     protected void preAnimateRemove(RecyclerView.ViewHolder holder) {
@@ -701,7 +701,7 @@ public class MyBaseItemAnimtor extends SimpleItemAnimator {
 
 
     protected long getAddDelay(final RecyclerView.ViewHolder holder) {
-        return Math.abs(holder.getAdapterPosition() * getAddDuration() / 4);
+        return Math.abs(holder.getAdapterPosition() % 6 * getAddDuration() / 4);
     }
 
     protected long getRemoveDelay(final RecyclerView.ViewHolder holder) {

@@ -26,6 +26,7 @@ import reader.simple.com.simple_reader.common.Constants;
 import reader.simple.com.simple_reader.common.DeviceUtil;
 import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
+import reader.simple.com.simple_reader.domain.ArticleInfo;
 import reader.simple.com.simple_reader.domain.PageInfo;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.presenter.impl.MainPresenter;
@@ -47,7 +48,6 @@ public class MainActivity extends BaseActivity implements
     RecyclerView mainRecyclerView;
     @InjectView(R.id.main_swipe_freshlayout)
     SwipeRefreshLayout mSwipeFreshlayout;
-    private Presenter mPresenter;
     private MainRecylerViewAdapter mRecylerAdapter;
     private ACache mACahe;
     private static final String KEY_PAGEINFOS = "articles";
@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity implements
         mainDrawer.setDrawerListener(barDrawerToggle);
         barDrawerToggle.syncState();
 
-        String[] TEST = {"设置", "关于", "通知展示", "夜间模式", "白天模式"};
+        String[] TEST = {"设置", "关于", "通知展示"};
 
         List<String> data = new ArrayList<>();
         Collections.addAll(data, TEST);
@@ -146,8 +146,8 @@ public class MainActivity extends BaseActivity implements
             mainDrawer.closeDrawer(slideContentList);
         });
 
-        mPresenter = new MainPresenter(this, this);
-        mPresenter.initialized();
+        Presenter presenter = new MainPresenter(this, this);
+        presenter.initialized();
 
 
     }
@@ -190,8 +190,15 @@ public class MainActivity extends BaseActivity implements
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && mRecylerAdapter.getItemCount() > 0 && lastVisibleItem + 1 ==
                         mRecylerAdapter.getItemCount()) {
                     if (isHaveMore) {
+                        ArticleInfo info;
                         mSwipeFreshlayout.setRefreshing(true);
-                        getArticleInfos(currentRow);
+                        if (currentRow == 0) {
+                            getArticleInfos(currentRow);
+                        } else {
+                            info = mRecylerAdapter.getLastItem();
+                            loadMoreArticles(info.createTime, info.updateTime);
+                        }
+
                     } else {
                         showToastMessage(Constants.NONELOAD);
                     }
@@ -204,33 +211,55 @@ public class MainActivity extends BaseActivity implements
     }
 
     protected void getArticleInfos(int pageNum) {
-        if (Utils.isNetworkConnected(this)) {
-            RetrofitNetWork.getInstance().getPageInfos(20, pageNum)
-                    .subscribe(pageInfo -> {
-                                if (pageNum == 0) {
-                                    mRecylerAdapter.clear();
-                                    //仅存储最新20条，有效时间2小时
-                                    mACahe.put(KEY_PAGEINFOS, pageInfo, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000));
-                                }
-                                if (pageInfo.body.articleInfoList.size() == 20) {
-                                    currentRow++;
-                                    isHaveMore = true;
-                                } else {
-                                    mRecylerAdapter.setHintMessage(Constants.NONELOAD);
-                                    isHaveMore = false;
-                                }
-                                mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+        RetrofitNetWork.getInstance().getPageInfos(20, pageNum)
+                .subscribe(pageInfo -> {
+                            if (pageNum == 0) {
+                                mRecylerAdapter.clear();
+                                //仅存储最新20条，有效时间2小时
+                                mACahe.put(KEY_PAGEINFOS, pageInfo, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000));
                             }
-                            , throwable -> {
-                                showSnackMessage(mainRecyclerView, throwable.getMessage());
-                            }
-                            , () -> {
-                                if (mSwipeFreshlayout != null && mSwipeFreshlayout.isRefreshing()) {
-                                    mSwipeFreshlayout.setRefreshing(false);
-                                }
-                            });
-        }
+                            setLoadMore(pageInfo);
+                            mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+                        }
+                        , this::doOnThrow
+                        , this::hideRefresh);
 
+    }
+
+    private void doOnThrow(Throwable throwable) {
+        RetrofitNetWork.catchThrowable(this, throwable);
+        mRecylerAdapter.setHintMessage(Constants.NET_ERROR);
+        hideRefresh();
+    }
+
+    private void hideRefresh() {
+        if (mSwipeFreshlayout != null && mSwipeFreshlayout.isRefreshing()) {
+            mSwipeFreshlayout.setRefreshing(false);
+        }
+    }
+
+    private void setLoadMore(PageInfo pageInfo) {
+        if (pageInfo.body.articleInfoList.size() == 20) {
+            ++currentRow;
+            isHaveMore = true;
+        } else {
+            mRecylerAdapter.setHintMessage(Constants.NONELOAD);
+            isHaveMore = false;
+        }
+    }
+
+    protected void loadMoreArticles(String createTime, String updateTime) {
+        if (Utils.isNetworkConnected(this)) {
+            RetrofitNetWork.getInstance().loadMoreArticle(20, createTime, updateTime)
+                    .subscribe(pageInfo -> {
+                                setLoadMore(pageInfo);
+                                mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+                            },
+                            this::doOnThrow
+                            ,
+                            this::hideRefresh
+                    );
+        }
     }
 
     @Override

@@ -50,9 +50,10 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void setItems(List<ArticleInfo> info) {
-        int pos = getItemCount();
+        int pos = getItemCount() ;
         testDate.addAll(info);
         notifyItemRangeInserted(pos, info.size());
+
     }
 
     public void setItem(ArticleInfo info) {
@@ -76,7 +77,7 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
         int size = testDate.size();
         testDate.clear();
-        notifyItemRangeRemoved(0, size);
+        notifyItemRangeRemoved(0, size + 1);
     }
 
     @Override
@@ -131,6 +132,10 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return testDate.size() + 1;
     }
 
+    public ArticleInfo getLastItem() {
+        return testDate.get(testDate.size() - 1);
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getItemCount())
@@ -143,6 +148,7 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void setHintMessage(String hintMessage) {
         this.hintMessage = hintMessage;
+        notifyItemChanged(getItemCount());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
