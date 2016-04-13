@@ -1,8 +1,27 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:windowExitTransition">@transition/enter_exit</item>
+        <item name="android:windowEnterTransition">@transition/enter_exit</item>
+
+        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/change_image_transition</item>
+
     </style>
+
+    <style name="SwipeBackTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+    </style>
+
 </resources>

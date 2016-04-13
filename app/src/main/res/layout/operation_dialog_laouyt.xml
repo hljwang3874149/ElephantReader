@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <reader.simple.com.simple_reader.ui.widget.DragViewLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/root_drag_layout"
+        android:background="@android:color/transparent"
+        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/notify_image"
+        android:layout_width="240dp"
+        android:layout_height="359dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/notify_image"
+        android:contentDescription="@null"/>
+    </reader.simple.com.simple_reader.ui.widget.DragViewLayout>
+

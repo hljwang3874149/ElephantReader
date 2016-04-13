@@ -1,9 +1,6 @@
 package reader.simple.com.simple_reader.ui.widget;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
@@ -12,12 +9,13 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
+import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.DebugUtil;
 
 
 /**
  * ==================================================
- * 项目名称：mobike
+ * 项目名称：SimpleReader
  * 创建人：wangxiaolong
  * 创建时间：16/4/6 下午10:03
  * 修改时间：16/4/6 下午10:03
@@ -27,9 +25,8 @@ import reader.simple.com.simple_reader.common.DebugUtil;
  */
 public class DragViewLayout extends FrameLayout {
     private ViewDragHelper mViewDrageHelper;
-    private View mFirstView, mSecondView;
-    private float mX, mY;
-    private int mViewHight;
+    private View mFirstView;
+    private int mViewTop;
     private DrageViewClampVerticalListener mListener;
 
     public void setmListener(DrageViewClampVerticalListener mListener) {
@@ -50,6 +47,7 @@ public class DragViewLayout extends FrameLayout {
     }
 
     private void initView() {
+        //初始化 ViewDragHelper
         mViewDrageHelper = ViewDragHelper.create(this, mCallback);
 
     }
@@ -57,117 +55,89 @@ public class DragViewLayout extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mFirstView = getChildAt(1);
-        mSecondView = getChildAt(0);
-
+        //当view inflate 完毕 获取 要监听的view
+        mFirstView = findViewById(R.id.notify_image);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        mViewHight = mFirstView.getMeasuredHeight();
-        mX = mFirstView.getLeft();
-        mY = mFirstView.getTop();
-    }
-
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-        Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888);
-        Canvas mCanvas = new Canvas(bitmap);
-        DebugUtil.e("dispathcDraw");
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec), measureHight(heightMeasureSpec));
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    private int measureHight(int heightMeasureSpec) {
-        int specMode = MeasureSpec.getMode(heightMeasureSpec);
-        int specSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (specMode == MeasureSpec.EXACTLY) {
-            return specSize;
-        } else {
-            return specSize;
-        }
-
-    }
-
-    private int measureWidth(int widthMeasureSpec) {
-        int specMode = MeasureSpec.getMode(widthMeasureSpec);
-        int specSize = MeasureSpec.getSize(widthMeasureSpec);
-        if (specMode == MeasureSpec.EXACTLY) {
-            return specSize;
-        } else {
-            return specSize;
-        }
-    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        //mViewDrageHelper拦截手势事件 必须的
         return mViewDrageHelper.shouldInterceptTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        // mViewDrageHelper处理手势事件 必须
         mViewDrageHelper.processTouchEvent(event);
         return true;
     }
 
     @Override
     public void computeScroll() {
-
+        //需重写此方法 ， ViewDrageHelper 内部使用ScrollerCompat Scoller的v4兼容类
         if (mViewDrageHelper.continueSettling(true)) {
             ViewCompat.postInvalidateOnAnimation(this);
         }
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        mViewTop = mFirstView.getTop();
+    }
+
 
     private ViewDragHelper.Callback mCallback = new ViewDragHelper.Callback() {
 
+            //确认 当前view 是否需要处理手势
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
+
             return child == mFirstView;
         }
 
+        //处理横向手势
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return left;
+            return mFirstView.getLeft();
         }
-
+        //处理纵向手势
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
+            if (null != mListener) {
+                mListener.onVerticalMoving();
+            }
             return top;
         }
+        //抬起手势处理
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
-            super.onViewReleased(releasedChild, xvel, yvel);
+            DebugUtil.e("onViewReleased");
             if (mListener == null) {
                 return;
             }
-            if (Math.abs(releasedChild.getTop() - mFirstView.getTop()) > ViewConfiguration.get(getContext()).getScaledTouchSlop() * 3) {
-                mListener.onVerticalMoveSuccess();
+            DebugUtil.e(" onViewReleased move = " + releasedChild.getTop() + " | up =" + mViewTop + " viewtop = " + mFirstView.getTop());
+            if (Math.abs(releasedChild.getTop() - mViewTop) > ViewConfiguration.get(getContext()).getScaledTouchSlop() * 3) {
+                mListener.onVerticalMoveDirection(releasedChild.getTop() < mViewTop);
             } else {
-                mViewDrageHelper.smoothSlideViewTo(mFirstView, mFirstView.getLeft(), mFirstView.getTop());
+                mViewDrageHelper.smoothSlideViewTo(mFirstView, mFirstView.getLeft(), mViewTop);
                 ViewCompat.postInvalidateOnAnimation(DragViewLayout.this);
+                mListener.onVerticalBack();
             }
         }
 
-        @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            super.onViewPositionChanged(changedView, left, top, dx, dy);
-        }
     };
 
     public interface DrageViewClampVerticalListener {
 
-        void onVerticalMoveSuccess();
+        void onVerticalMoving();
 
-        void moveFailture();
+        void onVerticalMoveDirection(boolean isUp);
+
+        void onVerticalBack();
+
     }
 
 

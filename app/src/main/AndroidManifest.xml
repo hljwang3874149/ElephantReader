@@ -31,13 +31,14 @@
         </activity>
         <activity android:name=".ui.activity.AboutActivity">
         </activity>
-        <activity
-            android:name=".ui.activity.WebTextActivity"
-            >
+        <activity android:name=".ui.activity.WebTextActivity">
         </activity>
+        <activity android:name=".ui.activity.SettingActivity"/>
         <activity
-            android:name=".ui.activity.SettingActivity"
-            />
+            android:name=".ui.activity.ShowNotifyActivity"
+            android:label="@string/title_activity_show_notify"
+            android:theme="@style/SwipeBackTheme">
+        </activity>
     </application>
 
 </manifest>

@@ -1,30 +1,29 @@
 package reader.simple.com.simple_reader.ui.activity;
 
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view
-        .ViewPropertyAnimatorListenerAdapter;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.widget.NestedScrollView;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.InjectView;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import reader.simple.com.simple_reader.R;
+import reader.simple.com.simple_reader.common.Constants;
 import reader.simple.com.simple_reader.common.DeviceUtil;
 import reader.simple.com.simple_reader.common.Utils;
-import reader.simple.com.simple_reader.presenter.impl
-        .WebTextPresenter;
-import reader.simple.com.simple_reader.ui.activity.base
-        .BaseActivity;
+import reader.simple.com.simple_reader.presenter.impl.WebTextPresenter;
 import reader.simple.com.simple_reader.ui.activity.base.BaseSwipeActivity;
-import reader.simple.com.simple_reader.ui.webView
-        .ArticleWebView;
-import reader.simple.com.simple_reader.ui.webView
-        .HtmlWebClient;
-import reader.simple.com.simple_reader.viewInterface
-        .WebTextView;
+import reader.simple.com.simple_reader.ui.webView.ArticleWebView;
+import reader.simple.com.simple_reader.ui.webView.HtmlWebClient;
+import reader.simple.com.simple_reader.viewInterface.WebTextView;
 
 public class WebTextActivity extends BaseSwipeActivity
         implements WebTextView {
@@ -34,6 +33,10 @@ public class WebTextActivity extends BaseSwipeActivity
     NestedScrollView scrollView;
     @InjectView(R.id.fab)
     FloatingActionButton fab;
+    @InjectView(R.id.headerImage)
+    ImageView mImageView;
+    @InjectView(R.id.html_text_rootview)
+    View mRootView;
     private WebTextPresenter mPresenter;
     private int mScreenHight;
     private boolean isShowFab;
@@ -49,6 +52,11 @@ public class WebTextActivity extends BaseSwipeActivity
     }
 
     @Override
+    protected boolean isHaveFinishAnim() {
+        return false;
+    }
+
+    @Override
     protected int getContentViewLayoutID() {
         return R.layout.activity_html_text;
     }
@@ -57,7 +65,7 @@ public class WebTextActivity extends BaseSwipeActivity
     protected void initViewsAndEvents() {
         mScreenHight = DeviceUtil.getScreenHeight(this);
         mPresenter = new WebTextPresenter(this, this,
-                getIntent().getStringExtra("id"));
+                getIntent().getStringExtra(Constants.KEY_ARCITLE));
         mPresenter.initialized();
         scrollView.setOnScrollChangeListener(
                 (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -84,12 +92,29 @@ public class WebTextActivity extends BaseSwipeActivity
                 });
 
         webView.setWebViewClient(new HtmlWebClient());
+        mImageView.setVisibility(View.VISIBLE);
+        ViewCompat.setTransitionName(mImageView, getIntent().getStringExtra(Constants.KEY_ARCITLE));
+        initRootView();
+
+        Glide.with(this)
+                .load(getIntent().getStringExtra(Constants.KEY_IMAG_PATH))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .crossFade()
+                .into(mImageView);
         fab.setOnClickListener(v -> {
             scrollView.smoothScrollTo(0, 10);
         });
 
     }
 
+    private void initRootView() {
+        mRootView.setAlpha(1f);
+    }
+
+    @Override
+    protected boolean isNeedOtherDoSetToolsbar() {
+        return true;
+    }
 
     @Override
     public void getArticleInfo(String info) {
@@ -109,6 +134,8 @@ public class WebTextActivity extends BaseSwipeActivity
             mPresenter.clear();
             mPresenter = null;
         }
+        webView.clearCache(true);
+        webView.clearHistory();
     }
 
     @Override
@@ -126,8 +153,16 @@ public class WebTextActivity extends BaseSwipeActivity
             case R.id.share_article:
                 Utils.shareArticleUrl(this, mPresenter.getPath());
                 return true;
+            case R.id.home:
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+                    finishAfterTransition();
+                } else {
+                    finish();
+                }
+                return true;
             default:
-                return super.onOptionsItemSelected(item);
+                onBackPressed();
+                return true;
         }
 
     }
@@ -149,6 +184,10 @@ public class WebTextActivity extends BaseSwipeActivity
 
     @Override
     protected boolean getSwipeBackLayoutEnabled() {
-        return true;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

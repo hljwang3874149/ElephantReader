@@ -88,15 +88,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void setStatusbar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            set19and20SdkStautsBar();
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && !isNeedOtherDoSetToolsbar()) {
+            set19and20SdkStautsBar(toolbar);
         }
     }
 
-    protected void set19and20SdkStautsBar() {
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+    protected void set19and20SdkStautsBar(View view) {
+        view.setPadding(0, getStatusBarHeight(), 0, 0);
     }
 
     public int getStatusBarHeight() {
@@ -136,8 +136,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        if (pendingTransition()) {
-            switch (getTransitionMode()) {
+        if (pendingTransition() && isHaveFinishAnim()) {
+            switch (getTransitionMode() ) {
+
                 case LEFT:
                     overridePendingTransition(R.anim.left_in, R.anim.left_out);
                     break;
@@ -186,5 +187,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected  void doBeforeSetContentView(){
 
     };
+    protected   boolean isHaveFinishAnim(){
+        return  true;
+    }
+
+    protected  boolean isNeedOtherDoSetToolsbar(){
+        return  false;
+    }
 
 }

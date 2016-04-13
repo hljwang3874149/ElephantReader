@@ -8,11 +8,11 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_html_text">
+
     <reader.simple.com.simple_reader.ui.webView.ArticleWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:scrollbars="vertical"
         />
-
 </android.support.v4.widget.NestedScrollView>

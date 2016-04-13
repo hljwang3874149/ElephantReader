@@ -2,6 +2,8 @@ package reader.simple.com.simple_reader.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,28 +20,22 @@ import java.util.List;
 
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
-import reader.simple.com.simple_reader.animator
-        .ItemAnimatorFactory;
+import reader.simple.com.simple_reader.animator.ItemAnimatorFactory;
 import reader.simple.com.simple_reader.common.ACache;
+import reader.simple.com.simple_reader.common.Constants;
 import reader.simple.com.simple_reader.common.DeviceUtil;
 import reader.simple.com.simple_reader.common.Utils;
-import reader.simple.com.simple_reader.common.netWork
-        .RetrofitNetWork;
+import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
 import reader.simple.com.simple_reader.domain.PageInfo;
 import reader.simple.com.simple_reader.presenter.Presenter;
-import reader.simple.com.simple_reader.presenter.impl
-        .MainPresenter;
-import reader.simple.com.simple_reader.ui.activity.base
-        .BaseActivity;
-import reader.simple.com.simple_reader.ui.adapter
-        .MainDrawerAdapter;
-import reader.simple.com.simple_reader.ui.adapter
-        .MainRecylerViewAdapter;
-import reader.simple.com.simple_reader.viewInterface
-        .MainView;
+import reader.simple.com.simple_reader.presenter.impl.MainPresenter;
+import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
+import reader.simple.com.simple_reader.ui.adapter.MainDrawerAdapter;
+import reader.simple.com.simple_reader.ui.adapter.MainRecylerViewAdapter;
+import reader.simple.com.simple_reader.viewInterface.MainView;
 
 public class MainActivity extends BaseActivity implements
-        MainView {
+        MainView, MainRecylerViewAdapter.AdapterCallback {
 
     @InjectView(R.id.slide_content)
     ListView slideContentList;
@@ -55,6 +51,10 @@ public class MainActivity extends BaseActivity implements
     private MainRecylerViewAdapter mRecylerAdapter;
     private ACache mACahe;
     private static final String KEY_PAGEINFOS = "articles";
+    private LinearLayoutManager mLinearLayoutManager;
+    private int currentRow = 0;
+    private int lastVisibleItem;
+    private boolean isHaveMore = true;
 
     @Override
     protected boolean pendingTransition() {
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected TransitionMode getTransitionMode() {
-        return TransitionMode.FADE;
+        return null;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity implements
         mainDrawer.setDrawerListener(barDrawerToggle);
         barDrawerToggle.syncState();
 
-        String[] TEST = {"设置", "关于", "夜间模式", "白天模式"};
+        String[] TEST = {"设置", "关于", "通知展示", "夜间模式", "白天模式"};
 
         List<String> data = new ArrayList<>();
         Collections.addAll(data, TEST);
@@ -119,6 +119,8 @@ public class MainActivity extends BaseActivity implements
                 case 1:
                     startActivity(new Intent(this, AboutActivity.class));
                     break;
+                case 2:
+                    startActivityWithIntent(new Intent(this, ShowNotifyActivity.class));
             }
 //            switch (AppCompatDelegate
 //                    .getDefaultNightMode()) {
@@ -154,17 +156,18 @@ public class MainActivity extends BaseActivity implements
     public void initSwipeFreshView() {
         mSwipeFreshlayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), Color.RED, Color.BLUE, Color.GRAY);
         mSwipeFreshlayout.setOnRefreshListener(() -> {
-            getArticleInfos(0);
+            currentRow = 0;
+            getArticleInfos(currentRow);
         });
 
     }
 
     @Override
     public void initRecyclerView() {
-
-        mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mainRecyclerView.setLayoutManager(mLinearLayoutManager);
         mainRecyclerView.setItemAnimator(ItemAnimatorFactory.slideIn());
-        mRecylerAdapter = new MainRecylerViewAdapter(this);
+        mRecylerAdapter = new MainRecylerViewAdapter(this, this);
         mainRecyclerView.setAdapter(mRecylerAdapter);
         PageInfo pageInfo = (PageInfo) mACahe.getAsObject(KEY_PAGEINFOS);
         if (null != pageInfo) {
@@ -172,8 +175,31 @@ public class MainActivity extends BaseActivity implements
         } else {
             mSwipeFreshlayout.setProgressViewOffset(false, toolbar.getHeight(), DeviceUtil.dip2px(this, 20));
             mSwipeFreshlayout.setRefreshing(true);
-            getArticleInfos(0);
+            getArticleInfos(currentRow);
         }
+        mainRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && mRecylerAdapter.getItemCount() > 0 && lastVisibleItem + 1 ==
+                        mRecylerAdapter.getItemCount()) {
+                    if (isHaveMore) {
+                        mSwipeFreshlayout.setRefreshing(true);
+                        getArticleInfos(currentRow);
+                    } else {
+                        showToastMessage(Constants.NONELOAD);
+                    }
+
+                }
+            }
+        });
+
 
     }
 
@@ -186,6 +212,13 @@ public class MainActivity extends BaseActivity implements
                                     //仅存储最新20条，有效时间2小时
                                     mACahe.put(KEY_PAGEINFOS, pageInfo, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000));
                                 }
+                                if (pageInfo.body.articleInfoList.size() == 20) {
+                                    currentRow++;
+                                    isHaveMore = true;
+                                } else {
+                                    mRecylerAdapter.setHintMessage(Constants.NONELOAD);
+                                    isHaveMore = false;
+                                }
                                 mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
                             }
                             , throwable -> {
@@ -197,6 +230,17 @@ public class MainActivity extends BaseActivity implements
                                 }
                             });
         }
+
+    }
+
+    @Override
+    public void enterDetail(String path, View imageView, String arctleId) {
+        ActivityOptionsCompat mOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imageView, arctleId);
+        Intent startIntent = new Intent(this, WebTextActivity.class);
+        startIntent.putExtra(Constants.KEY_ARCITLE, arctleId);
+        startIntent.putExtra(Constants.KEY_IMAG_PATH, path);
+        ActivityCompat.startActivity(this, startIntent, mOptions.toBundle());
+
 
     }
 }

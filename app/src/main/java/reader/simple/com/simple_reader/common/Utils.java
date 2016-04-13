@@ -124,20 +124,21 @@ public class Utils {
      */
 
     public static void startChrome(Context context, String url) {
-        if(TextUtils.isEmpty(url)){
+        if (TextUtils.isEmpty(url)) {
             return;
         }
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
-        DebugUtil.e("URL = " +url);
+        DebugUtil.e("URL = " + url);
         Uri content_url = Uri.parse(url);
         intent.setData(content_url);
         context.startActivity(intent);
     }
+
     /**
      * share intent
      */
-    public static void shareArticleUrl(Context ctx, String uri){
+    public static void shareArticleUrl(Context ctx, String uri) {
         Intent intent = new Intent(Intent.ACTION_SEND); // 启动分享发送的属性
         intent.setType("text/plain"); // 分享发送的数据类型
         intent.putExtra(Intent.EXTRA_SUBJECT, "推荐大象公会精彩文章"); // 分享的主题
