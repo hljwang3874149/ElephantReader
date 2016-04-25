@@ -701,7 +701,7 @@ public class MyBaseItemAnimtor extends SimpleItemAnimator {
 
 
     protected long getAddDelay(final RecyclerView.ViewHolder holder) {
-        return Math.abs(holder.getAdapterPosition() % 6 * getAddDuration() / 4);
+        return Math.abs(holder.getAdapterPosition() % 4 * getAddDuration() / 4);
     }
 
     protected long getRemoveDelay(final RecyclerView.ViewHolder holder) {

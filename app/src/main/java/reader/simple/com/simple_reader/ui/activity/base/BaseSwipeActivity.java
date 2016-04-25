@@ -20,7 +20,6 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
  */
 public abstract class BaseSwipeActivity extends BaseActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
-    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void doBeforeSetContentView() {
@@ -30,10 +29,10 @@ public abstract class BaseSwipeActivity extends BaseActivity implements SwipeBac
 
     @Override
     protected void doAfterSetContentView() {
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEnableGesture(getSwipeBackLayoutEnabled());
+        SwipeBackLayout swipeBackLayout = getSwipeBackLayout();
+        swipeBackLayout.setEnableGesture(getSwipeBackLayoutEnabled());
         if (!getSwipeBackLayoutEnabled()) {
-            mSwipeBackLayout.setEdgeTrackingEnabled(getSwipeBackLayoutTracking());
+            swipeBackLayout.setEdgeTrackingEnabled(getSwipeBackLayoutTracking());
         }
     }
 

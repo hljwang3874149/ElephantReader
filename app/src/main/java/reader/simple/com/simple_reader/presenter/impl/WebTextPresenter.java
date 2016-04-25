@@ -3,21 +3,17 @@ package reader.simple.com.simple_reader.presenter.impl;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
-import android.support.v4.view.ViewPropertyAnimatorUpdateListener;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import reader.simple.com.simple_reader.common.ACache;
 import reader.simple.com.simple_reader.common.ArticleUtil;
-import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.viewInterface.WebTextView;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * ==================================================
@@ -34,6 +30,7 @@ public class WebTextPresenter implements Presenter {
     private String artcleID;
     private ACache mAcache;
     private String mPath;
+    private CompositeSubscription mSubscription;
 
     public WebTextPresenter(Context mContext, WebTextView mView, String artcleID) {
         this.mView = mView;
@@ -45,20 +42,22 @@ public class WebTextPresenter implements Presenter {
     public void initialized() {
         mView.showLoadingView();
         if (TextUtils.isEmpty(mAcache.getAsString(artcleID))) {
-            RetrofitNetWork.getInstance().getArticleDescInfo(artcleID)
-                    .subscribe(articleDescInfo -> {
-                        String artcle = ArticleUtil.formatBody(articleDescInfo.articleBody
-                                .articleInfo);
-                        mView.getArticleInfo(artcle);
-                        mPath = articleDescInfo.articleBody.articleInfo.wechatUrl;
-                        mAcache.put(artcleID, artcle, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
-                        mAcache.put("Uri_" + artcleID, mPath, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
-                    }, throwable -> {
-                        mView.showThrowMessage(throwable.getMessage());
+            mSubscription.add(
+                    RetrofitNetWork.getInstance().getArticleDescInfo(artcleID)
+                            .subscribe(articleDescInfo -> {
+                                String artcle = ArticleUtil.formatBody(articleDescInfo.articleBody
+                                        .articleInfo);
+                                mView.getArticleInfo(artcle);
+                                mPath = articleDescInfo.articleBody.articleInfo.wechatUrl;
+                                mAcache.put(artcleID, artcle, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
+                                mAcache.put("Uri_" + artcleID, mPath, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000)); //缓存 文章数据2小时
+                            }, throwable -> {
+                                mView.showThrowMessage(throwable.getMessage());
 
-                    }, () -> {
-                        mView.hideLoadingView();
-                    });
+                            }, () -> {
+                                mView.hideLoadingView();
+                            })
+            );
         } else {
             mPath = mAcache.getAsString("Uri_" + artcleID);
             mView.getArticleInfo(mAcache.getAsString(artcleID));
@@ -89,6 +88,7 @@ public class WebTextPresenter implements Presenter {
         artcleID = null;
         mAcache = null;
         mView = null;
+        mSubscription.unsubscribe();
     }
 
     public String getPath() {

@@ -18,11 +18,13 @@
             android:name=".ui.activity.SplashActivty"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullscreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN"/>
+
+
+             <category android:name="android.intent.category.LAUNCHER"/>
+             </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
@@ -40,7 +42,16 @@
             android:theme="@style/SwipeBackTheme">
         </activity>
         <activity android:name=".ui.activity.TestDrawActivity">
-
+        </activity>
+        <activity
+            android:name=".test.DropImageActiviy"
+            android:label="@string/title_activity_drop_image_activiy"
+            android:theme="@style/SwipeBackTheme">
+        </activity>
+        <activity
+            android:name=".ui.activity.ReflectionActivity"
+            android:label="@string/title_activity_reflection"
+            android:theme="@style/SwipeBackTheme">
         </activity>
     </application>
 

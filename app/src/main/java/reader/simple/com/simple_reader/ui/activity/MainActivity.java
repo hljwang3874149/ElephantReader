@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ import reader.simple.com.simple_reader.animator.ItemAnimatorFactory;
 import reader.simple.com.simple_reader.common.ACache;
 import reader.simple.com.simple_reader.common.Constants;
 import reader.simple.com.simple_reader.common.DeviceUtil;
+import reader.simple.com.simple_reader.common.DoubleClickExitHelper;
 import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
 import reader.simple.com.simple_reader.domain.ArticleInfo;
@@ -34,6 +36,7 @@ import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 import reader.simple.com.simple_reader.ui.adapter.MainDrawerAdapter;
 import reader.simple.com.simple_reader.ui.adapter.MainRecylerViewAdapter;
 import reader.simple.com.simple_reader.viewInterface.MainView;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends BaseActivity implements
         MainView, MainRecylerViewAdapter.AdapterCallback {
@@ -55,6 +58,9 @@ public class MainActivity extends BaseActivity implements
     private int currentRow = 0;
     private int lastVisibleItem;
     private boolean isHaveMore = true;
+    private DoubleClickExitHelper mDoubleClickExitHelper;
+    private CompositeSubscription subscriptions;
+
 
     @Override
     protected boolean pendingTransition() {
@@ -74,6 +80,17 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void initViewsAndEvents() {
         mACahe = ACache.get(this);
+        subscriptions = new CompositeSubscription();
+
+        initDrawerLayout();
+
+        Presenter presenter = new MainPresenter(this, this);
+        presenter.initialized();
+        mDoubleClickExitHelper = new DoubleClickExitHelper(this);
+
+    }
+
+    private void initDrawerLayout() {
         ActionBarDrawerToggle barDrawerToggle = new
                 ActionBarDrawerToggle(this, mainDrawer,
                         toolbar, R.string.app_name, R.string.app_name) {
@@ -103,10 +120,9 @@ public class MainActivity extends BaseActivity implements
         mainDrawer.setDrawerListener(barDrawerToggle);
         barDrawerToggle.syncState();
 
-        String[] TEST = {"设置", "关于", "通知展示"};
 
         List<String> data = new ArrayList<>();
-        Collections.addAll(data, TEST);
+        Collections.addAll(data, getResources().getStringArray(R.array.silde_menu));
         MainDrawerAdapter mainDrawerAdapter = new
                 MainDrawerAdapter(this, data);
 
@@ -121,35 +137,36 @@ public class MainActivity extends BaseActivity implements
                     break;
                 case 2:
                     startActivityWithIntent(new Intent(this, ShowNotifyActivity.class));
+                case 3:
+                    startActivityWithIntent(new Intent(this, ReflectionActivity.class));
             }
-//            switch (AppCompatDelegate
-//                    .getDefaultNightMode()) {
-//                case AppCompatDelegate
-//                        .MODE_NIGHT_NO:
-//                    AppCompatDelegate
-//                            .setDefaultNightMode
-//                                    (AppCompatDelegate.MODE_NIGHT_YES);
-//                    break;
-//                case AppCompatDelegate
-//                        .MODE_NIGHT_YES:
-//                    AppCompatDelegate
-//                            .setDefaultNightMode
-//                                    (AppCompatDelegate.MODE_NIGHT_NO);
-//                    break;
-//                default:
-//                    AppCompatDelegate
-//                            .setDefaultNightMode
-//                                    (AppCompatDelegate.MODE_NIGHT_YES);
-//            }
-
+//            setDayAndNightTheme();
 
             mainDrawer.closeDrawer(slideContentList);
         });
-
-        Presenter presenter = new MainPresenter(this, this);
-        presenter.initialized();
+    }
 
 
+    private void setDayAndNightTheme() {
+        switch (AppCompatDelegate
+                .getDefaultNightMode()) {
+            case AppCompatDelegate
+                    .MODE_NIGHT_NO:
+                AppCompatDelegate
+                        .setDefaultNightMode
+                                (AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case AppCompatDelegate
+                    .MODE_NIGHT_YES:
+                AppCompatDelegate
+                        .setDefaultNightMode
+                                (AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            default:
+                AppCompatDelegate
+                        .setDefaultNightMode
+                                (AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 
     @Override
@@ -211,18 +228,20 @@ public class MainActivity extends BaseActivity implements
     }
 
     protected void getArticleInfos(int pageNum) {
-        RetrofitNetWork.getInstance().getPageInfos(20, pageNum)
-                .subscribe(pageInfo -> {
-                            if (pageNum == 0) {
-                                mRecylerAdapter.clear();
-                                //仅存储最新20条，有效时间2小时
-                                mACahe.put(KEY_PAGEINFOS, pageInfo, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000));
-                            }
-                            setLoadMore(pageInfo);
-                            mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
-                        }
-                        , this::doOnThrow
-                        , this::hideRefresh);
+        subscriptions.add(
+                RetrofitNetWork.getInstance().getPageInfos(20, pageNum)
+                        .subscribe(pageInfo -> {
+                                    if (pageNum == 0) {
+                                        mRecylerAdapter.clear();
+                                        //仅存储最新20条，有效时间2小时
+                                        mACahe.put(KEY_PAGEINFOS, pageInfo, (int) (DateUtils.HOUR_IN_MILLIS * 2 / 1000));
+                                    }
+                                    setLoadMore(pageInfo);
+                                    mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+                                }
+                                , this::doOnThrow
+                                , this::hideRefresh)
+        );
 
     }
 
@@ -250,15 +269,17 @@ public class MainActivity extends BaseActivity implements
 
     protected void loadMoreArticles(String createTime, String updateTime) {
         if (Utils.isNetworkConnected(this)) {
-            RetrofitNetWork.getInstance().loadMoreArticle(20, createTime, updateTime)
-                    .subscribe(pageInfo -> {
-                                setLoadMore(pageInfo);
-                                mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
-                            },
-                            this::doOnThrow
-                            ,
-                            this::hideRefresh
-                    );
+            subscriptions.add(
+                    RetrofitNetWork.getInstance().loadMoreArticle(20, createTime, updateTime)
+                            .subscribe(pageInfo -> {
+                                        setLoadMore(pageInfo);
+                                        mRecylerAdapter.setItems(pageInfo.body.articleInfoList);
+                                    },
+                                    this::doOnThrow
+                                    ,
+                                    this::hideRefresh
+                            )
+            );
         }
     }
 
@@ -269,7 +290,16 @@ public class MainActivity extends BaseActivity implements
         startIntent.putExtra(Constants.KEY_ARCITLE, arctleId);
         startIntent.putExtra(Constants.KEY_IMAG_PATH, path);
         ActivityCompat.startActivity(this, startIntent, mOptions.toBundle());
+    }
 
+    @Override
+    public void onBackPressed() {
+        mDoubleClickExitHelper.onBackPress();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        subscriptions.unsubscribe();
     }
 }
