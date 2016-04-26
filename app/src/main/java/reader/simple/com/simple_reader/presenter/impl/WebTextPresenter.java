@@ -36,6 +36,7 @@ public class WebTextPresenter implements Presenter {
         this.mView = mView;
         this.artcleID = artcleID;
         mAcache = ACache.get(mContext);
+        mSubscription = new CompositeSubscription();
     }
 
     @Override
@@ -84,7 +85,7 @@ public class WebTextPresenter implements Presenter {
                 .start();
     }
 
-    public void clear() {
+    public void onDestroy() {
         artcleID = null;
         mAcache = null;
         mView = null;

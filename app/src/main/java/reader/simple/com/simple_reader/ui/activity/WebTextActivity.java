@@ -131,7 +131,7 @@ public class WebTextActivity extends BaseSwipeActivity
     @Override
     protected void doOnDestroy() {
         if (null != mPresenter) {
-            mPresenter.clear();
+            mPresenter.onDestroy();
             mPresenter = null;
         }
         webView.clearCache(true);

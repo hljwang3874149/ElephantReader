@@ -6,11 +6,11 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "reader.simple.com.simple_reader"
-        minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        applicationId rootProject.ext.appID
+        minSdkVersion rootProject.ext.min
+        targetSdkVersion rootProject.ext.target
+        versionCode rootProject.ext.code
+        versionName rootProject.ext.name
     }
 
     compileOptions {
@@ -28,6 +28,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
     testCompile 'junit:junit:4.12'
 
     compile rootProject.ext.libRxJava
@@ -36,7 +37,7 @@ dependencies {
     compile rootProject.ext.libRetrofitConverterGson
     compile rootProject.ext.libRetrofitAdapterRxJava
 
-    compile rootProject.ext.libEventBus
+//    compile rootProject.ext.libEventBus
 
     compile rootProject.ext.libGlide
     compile rootProject.ext.libButterKinfe

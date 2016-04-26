@@ -29,10 +29,15 @@ public class ShowNotifyActivity extends BaseActivity {
 
     @Override
     protected void initViewsAndEvents() {
-        notifyImage.setOnClickListener(v ->{
-            OperationDialogFragment.getInstance().show(getSupportFragmentManager(), "notify");
+        showDialogFragment();
+        notifyImage.setOnClickListener(v -> {
+            showDialogFragment();
         });
 
+    }
+
+    private void showDialogFragment() {
+        OperationDialogFragment.getInstance().show(getSupportFragmentManager(), "notify");
     }
 
 }

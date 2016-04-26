@@ -37,4 +37,12 @@ public class AboutPresenter implements Presenter {
         mViewInterface.setVersion(Utils.getVersion(context));
     }
 
+    @Override
+    public void onDestroy() {
+        mHelper = null;
+        context = null;
+        mViewInterface = null;
+
+    }
+
 }

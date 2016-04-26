@@ -54,6 +54,12 @@ public class SplashPresenter implements Presenter {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        ctx = null;
+        splashView = null;
+    }
+
     private void setAnimation(ImageView bgView) {
         ObjectAnimator animatorRight = ObjectAnimator.ofFloat(bgView, "translationX", 0, DeviceUtil
                 .getScreenWidth(ctx) - DeviceUtil.dip2px(ctx, 1000));

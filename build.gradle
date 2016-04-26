@@ -39,6 +39,12 @@ task clean(type: Delete) {
 
 project.ext {
 
+    appID = "reader.simple.com.simple_reader"
+    min = 14
+    target = 23
+    code = 2
+    name = "1.1"
+
     javaVersion = JavaVersion.VERSION_1_8
 
     libSupportAppcompat = "com.android.support:appcompat-v7:${supportVersion}"
@@ -57,9 +63,9 @@ project.ext {
     libRetrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
     libOkHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.0.0-RC1"
 
-    libAnkoSdk = "org.jetbrains.anko:anko-sdk15:${ankoVersion}"
-    libAnkoSdkv4 = "org.jetbrains.anko:anko-support-v4:${ankoVersion}"
-    libAnkoSdkv7 = "rg.jetbrains.anko:anko-appcompat-v7:${ankoVersion}"
+//    libAnkoSdk = "org.jetbrains.anko:anko-sdk15:${ankoVersion}"
+//    libAnkoSdkv4 = "org.jetbrains.anko:anko-support-v4:${ankoVersion}"
+//    libAnkoSdkv7 = "rg.jetbrains.anko:anko-appcompat-v7:${ankoVersion}"
     libRipple = "com.balysv:material-ripple:1.0.2"
 
     libGlide = "com.github.bumptech.glide:glide:3.7.0"

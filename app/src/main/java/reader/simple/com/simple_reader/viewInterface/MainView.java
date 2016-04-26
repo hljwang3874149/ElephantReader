@@ -1,5 +1,7 @@
 package reader.simple.com.simple_reader.viewInterface;
 
+import reader.simple.com.simple_reader.domain.PageInfo;
+
 /**
  * ==================================================
  * 项目名称：Simple_Reader
@@ -11,8 +13,17 @@ package reader.simple.com.simple_reader.viewInterface;
  * ==================================================
  */
 public interface MainView {
-    void initSwipeFreshView();
 
-    void initRecyclerView();
+    void doOnThrow(Throwable throwable);
+
+    void hideRefresh();
+
+    void clearListData();
+
+    void setLoadMore(PageInfo pageInfo);
+
+    void initCacheData(PageInfo pageInfo);
+    void showRefreshLoading();
+
 
 }
