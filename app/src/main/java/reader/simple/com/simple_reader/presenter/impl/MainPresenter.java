@@ -50,10 +50,11 @@ public class MainPresenter implements Presenter {
 
     @Override
     public void onDestroy() {
-
+        subscriptions.unsubscribe();
     }
 
     public void getArticleInfos(int pageNum) {
+        subscriptions.clear();
         subscriptions.add(
                 RetrofitNetWork.getInstance().getPageInfos(20, pageNum)
                         .subscribe(pageInfo -> {
@@ -71,6 +72,7 @@ public class MainPresenter implements Presenter {
     }
 
     public void loadMoreArticles(String createTime, String updateTime) {
+        subscriptions.clear();
         subscriptions.add(
                 RetrofitNetWork.getInstance().loadMoreArticle(20, createTime, updateTime)
                         .subscribe(pageInfo ->
