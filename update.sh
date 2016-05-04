@@ -30,5 +30,5 @@ case $TODO in
 		;;
 	*)
 die	"参数错误"
-；；
+;;
 esac
