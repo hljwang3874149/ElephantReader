@@ -1,14 +1,19 @@
 package reader.simple.com.simple_reader.ui.activity;
 
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.widget.NestedScrollView;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -37,6 +42,8 @@ public class WebTextActivity extends BaseSwipeActivity
     ImageView mImageView;
     @InjectView(R.id.html_text_rootview)
     View mRootView;
+    @InjectView(R.id.loadView)
+    ProgressBar loadView;
     private WebTextPresenter mPresenter;
     private int mScreenHight;
     private boolean isShowFab;
@@ -92,6 +99,18 @@ public class WebTextActivity extends BaseSwipeActivity
                 });
 
         webView.setWebViewClient(new HtmlWebClient());
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if(100 == newProgress){
+                    new Handler().postDelayed(()->{
+                        webView.setVisibility(View.VISIBLE);
+                        hideLoadingView();
+                    }, DateUtils.SECOND_IN_MILLIS);
+
+                }
+            }
+        });
         mImageView.setVisibility(View.VISIBLE);
         ViewCompat.setTransitionName(mImageView, getIntent().getStringExtra(Constants.KEY_ARCITLE));
         initRootView();
@@ -169,12 +188,12 @@ public class WebTextActivity extends BaseSwipeActivity
 
     @Override
     public void hideLoadingView() {
-
+        loadView.setVisibility(View.GONE);
     }
 
     @Override
     public void showLoadingView() {
-
+        loadView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -190,4 +209,5 @@ public class WebTextActivity extends BaseSwipeActivity
             return true;
         }
     }
+
 }

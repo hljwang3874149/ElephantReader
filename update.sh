@@ -11,7 +11,8 @@ TODO=$1
 DESC=$2
 
 push(){
-	git  add .
+	git add .
+	git st
 	git ci "$DESC"
 	git push os master
 	git push gb master

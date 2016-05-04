@@ -1,22 +1,10 @@
 package reader.simple.com.simple_reader.ui.webView;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.Request;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
-
-import reader.simple.com.simple_reader.common.DebugUtil;
 
 /**
  * ==================================================
@@ -37,6 +25,7 @@ public class HtmlWebClient extends WebViewClient {
         super.onPageCommitVisible(view, url);
 
     }
+
 
     @Override
     public void onPageFinished(WebView view, String url) {

@@ -55,15 +55,11 @@ public class WebTextPresenter implements Presenter {
                             }, throwable -> {
                                 mView.showThrowMessage(throwable.getMessage());
 
-                            }, () -> {
-                                mView.hideLoadingView();
                             })
             );
         } else {
             mPath = mAcache.getAsString("Uri_" + artcleID);
             mView.getArticleInfo(mAcache.getAsString(artcleID));
-            mView.hideLoadingView();
-
         }
     }
 

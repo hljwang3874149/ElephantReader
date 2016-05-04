@@ -9,10 +9,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_html_text">
 
-    <reader.simple.com.simple_reader.ui.webView.ArticleWebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        />
+        <reader.simple.com.simple_reader.ui.webView.ArticleWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:visibility="invisible"
+            />
+
+
 </android.support.v4.widget.NestedScrollView>
