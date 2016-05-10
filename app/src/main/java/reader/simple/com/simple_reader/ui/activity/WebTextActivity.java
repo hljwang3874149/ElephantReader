@@ -10,13 +10,14 @@ import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.InjectView;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -27,7 +28,6 @@ import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.presenter.impl.WebTextPresenter;
 import reader.simple.com.simple_reader.ui.activity.base.BaseSwipeActivity;
 import reader.simple.com.simple_reader.ui.webView.ArticleWebView;
-import reader.simple.com.simple_reader.ui.webView.HtmlWebClient;
 import reader.simple.com.simple_reader.viewInterface.WebTextView;
 
 public class WebTextActivity extends BaseSwipeActivity
@@ -98,12 +98,12 @@ public class WebTextActivity extends BaseSwipeActivity
 
                 });
 
-        webView.setWebViewClient(new HtmlWebClient());
-        webView.setWebChromeClient(new WebChromeClient(){
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                if(100 == newProgress){
-                    new Handler().postDelayed(()->{
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient() {
+
+            public void onProgressChanged(WebView webView, int newProgress) {
+                if (100 == newProgress) {
+                    new Handler().postDelayed(() -> {
                         webView.setVisibility(View.VISIBLE);
                         hideLoadingView();
                     }, DateUtils.SECOND_IN_MILLIS);
@@ -117,12 +117,15 @@ public class WebTextActivity extends BaseSwipeActivity
 
         Glide.with(this)
                 .load(getIntent().getStringExtra(Constants.KEY_IMAG_PATH))
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into(mImageView);
         fab.setOnClickListener(v -> {
             scrollView.smoothScrollTo(0, 10);
         });
+
+        ViewGroup.LayoutParams mParams = webView.getLayoutParams();
+        mParams.width = DeviceUtil.getScreenWidth(this);
+        mParams.height = DeviceUtil.getScreenHeight(this);
 
     }
 
@@ -153,8 +156,8 @@ public class WebTextActivity extends BaseSwipeActivity
             mPresenter.onDestroy();
             mPresenter = null;
         }
-        webView.clearCache(true);
-        webView.clearHistory();
+        if (webView != null)
+            webView.destroy();
     }
 
     @Override

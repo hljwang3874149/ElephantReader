@@ -27,30 +27,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-
     compile rootProject.ext.libRxJava
     compile rootProject.ext.libRxAndroid
     compile rootProject.ext.libRetrofit
     compile rootProject.ext.libRetrofitConverterGson
     compile rootProject.ext.libRetrofitAdapterRxJava
-
-//    compile rootProject.ext.libEventBus
-
+    //    compile rootProject.ext.libEventBus
     compile rootProject.ext.libGlide
     compile rootProject.ext.libButterKinfe
-
     compile rootProject.ext.libSupportAppcompat
     compile rootProject.ext.libSupportV4
     compile rootProject.ext.libSupportDesign
     compile rootProject.ext.libSupportRecyclerview
     compile rootProject.ext.libRipple
     compile rootProject.ext.libSwipeBack
-
     compile 'com.github.moduth:blockcanary-ui:1.2.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    compile files('libs/tbs_sdk_v1.5.1.jar')
 }

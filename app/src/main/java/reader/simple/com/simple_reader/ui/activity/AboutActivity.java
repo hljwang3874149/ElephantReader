@@ -5,7 +5,11 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.graphics.Color;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
@@ -20,10 +24,13 @@ public class AboutActivity extends BaseActivity implements AboutView {
     TextView aboutIn;
     @InjectView(R.id.about_version)
     TextView aboutVersion;
+    @InjectView(R.id.text_switcher)
+    TextSwitcher mTextSwitcher;
 
     private AnimatorSet mRightOut;
     private AnimatorSet mLeftIn;
     private AboutPresenter mPresenter;
+    private int index;
 
     @Override
     protected boolean pendingTransition() {
@@ -55,6 +62,24 @@ public class AboutActivity extends BaseActivity implements AboutView {
 
             }
         });
+
+        mTextSwitcher.setFactory(new ViewSwitcher.ViewFactory(){
+
+            @Override
+            public View makeView() {
+                TextView mTextView = new TextView(AboutActivity.this);
+                mTextView.setTextColor(Color.DKGRAY);
+                mTextView.setTextSize(16);
+                return mTextView;
+            }
+        });
+        mTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this , R.anim.bottom_in));
+        mTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this , R.anim.top_out));
+        mTextSwitcher.setOnClickListener(v -> {
+            index++;
+            mTextSwitcher.setText("测试 textSwitcher" + index);
+        });
+        mTextSwitcher.setText("测试 textSwitcher");
 
     }
 

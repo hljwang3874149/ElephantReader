@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">阅·大象</string>
-    <string name="welcome">欢迎使用</string>
-    <string name="current.version">当前版本：%s</string>
-    <string name="arcticle_read">阅读量: %s</string>
+    <string name="app_name" translatable="false">阅·大象</string>
+    <string name="welcome" translatable="false">欢迎使用</string>
+    <string name="current.version" translatable="false">当前版本：%s</string>
+    <string name="arcticle_read" translatable="false">阅读量: %s</string>
     <string-array name="main_testdata">
         <item>第一条</item>
         <item>第二条</item>
@@ -17,14 +17,14 @@
         <item>通知展示</item>
         <item>反射示例</item>
     </string-array>
-    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_setting" translatable="false">SettingActivity</string>
     <string name="chrome_open">浏览器打开</string>
-    <string name="share.title">分享</string>
-    <string name="title_activity_show_notify">ShowNotifyActivity</string>
-    <string name="test.view">测试页面</string>
-    <string name="network_error">网络异常，请检查网络</string>
-    <string name="title_activity_drop_image_activiy">DropImageActiviy</string>
-    <string name="title_activity_reflection">ReflectionActivity</string>
-    <string name="exit.double">双击退出</string>
-    <string name="loading">加载中。。。</string>
+    <string name="share.title" translatable="false">分享</string>
+    <string name="title_activity_show_notify" translatable="false">ShowNotifyActivity</string>
+    <string name="test.view" translatable="false">测试页面</string>
+    <string name="network_error" translatable="false">网络异常，请检查网络</string>
+    <string name="title_activity_drop_image_activiy" translatable="false">DropImageActiviy</string>
+    <string name="title_activity_reflection" translatable="false">ReflectionActivity</string>
+    <string name="exit.double" translatable="false">双击退出</string>
+    <string name="loading" translatable="false">加载中。。。</string>
 </resources>

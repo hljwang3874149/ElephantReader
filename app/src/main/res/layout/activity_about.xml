@@ -9,6 +9,13 @@
 
     <include layout="@layout/common_toolbar"/>
 
+    <TextSwitcher
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_switcher"
+        android:layout_gravity="center"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="?attr/colorPrimary"
@@ -38,4 +45,6 @@
             android:textSize="20sp"/>
 
     </RelativeLayout>
+
+
 </LinearLayout>

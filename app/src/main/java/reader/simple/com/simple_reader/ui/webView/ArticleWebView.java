@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
+
 /**
  * 项目名称：AndroidMaterialDesignToolbar
  * 类描述：
@@ -29,13 +30,28 @@ public class ArticleWebView extends WebView {
     }
 
     private void init() {
-        getSettings().setJavaScriptEnabled(true);
         getSettings().setSupportZoom(true);
         getSettings().setBuiltInZoomControls(false);
         getSettings().setDomStorageEnabled(true);
         getSettings().setLoadsImagesAutomatically(true);
         getSettings().setLoadWithOverviewMode(true);
         getSettings().setUseWideViewPort(true);
+//        WebSettings webSetting = getSettings();
+//        webSetting.setAllowFileAccess(true);
+//        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+//        webSetting.setSupportZoom(true);
+//        webSetting.setBuiltInZoomControls(true);
+//        webSetting.setUseWideViewPort(true);
+//        webSetting.setSupportMultipleWindows(false);
+//        webSetting.setAppCacheEnabled(true);
+//        webSetting.setDatabaseEnabled(true);
+//        webSetting.setDomStorageEnabled(true);
+//        webSetting.setJavaScriptEnabled(true);
+//        webSetting.setGeolocationEnabled(true);
+//        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
+        // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
+//        webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+//        webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
     }
 

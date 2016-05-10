@@ -111,7 +111,8 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.articleTitle.setText(testDate.get(position).title);
         Glide.with(mContext)
                 .load(testDate.get(position).headpic)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(0.2f)
                 .into(holder.articleAvatar);
         holder.articleAuthor.setText(testDate.get(position).author);
         holder.acticleBrief.setText(testDate.get(position).brief);
