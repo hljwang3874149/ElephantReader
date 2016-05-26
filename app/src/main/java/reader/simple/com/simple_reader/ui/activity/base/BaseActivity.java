@@ -88,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void setStatusbar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && !isNeedOtherDoSetToolsbar()) {
             set19and20SdkStautsBar(toolbar);

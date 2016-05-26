@@ -68,6 +68,7 @@ public class WebTextActivity extends BaseSwipeActivity
         return R.layout.activity_html_text;
     }
 
+
     @Override
     protected void initViewsAndEvents() {
         mScreenHight = DeviceUtil.getScreenHeight(this);
@@ -191,11 +192,13 @@ public class WebTextActivity extends BaseSwipeActivity
 
     @Override
     public void hideLoadingView() {
-        loadView.setVisibility(View.GONE);
+        if (null != loadView)
+            loadView.setVisibility(View.GONE);
     }
 
     @Override
     public void showLoadingView() {
+        if(null != loadView)
         loadView.setVisibility(View.VISIBLE);
     }
 

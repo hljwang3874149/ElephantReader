@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -18,8 +20,10 @@ import android.net.NetworkInfo.State;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -33,6 +37,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -172,7 +177,7 @@ public class DeviceUtil {
     public static String getImsi(Context context) {
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String imsi = manager.getSubscriberId();
-        if (TextUtils.isEmpty(imsi) )
+        if (TextUtils.isEmpty(imsi))
             imsi = null;
         return imsi;
     }
@@ -488,7 +493,8 @@ public class DeviceUtil {
     }
 
     public static String getTrackingDistinctId(Context context) {
-        // String source = getAndroidId(context) + ":" + getImei(context) + ":" + DeviceUtil.getImsi(context) + ":" + ReaderApplication.getToken();
+        // String source = getAndroidId(context) + ":" + getImei(context) + ":" + DeviceUtil.getImsi(context) + ":" + ReaderApplication
+        // .getToken();
 
         String source = getAndroidId(context) + ":" + getImei(context) + ":" + DeviceUtil.getImsi(context);
         return MD5Util.MD5Encode(source, "utf-8");
@@ -538,7 +544,8 @@ public class DeviceUtil {
     /**
      * 将px值转换为sp值，保证文字大小不变
      *
-     * @param pxValue （DisplayMetrics类中属性scaledDensity）
+     * @param pxValue
+     *         （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int px2sp(Context context, float pxValue) {
@@ -549,7 +556,8 @@ public class DeviceUtil {
     /**
      * 将sp值转换为px值，保证文字大小不变
      *
-     * @param spValue （DisplayMetrics类中属性scaledDensity）
+     * @param spValue
+     *         （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int sp2px(Context context, float spValue) {
@@ -578,10 +586,12 @@ public class DeviceUtil {
     /**
      * save clientid
      *
-     * @param context context
+     * @param context
+     *         context
      */
     public static void setClientId(Context context) {
     }
+
     public static boolean isRunningApp(Context context, String packageName) {
         boolean isAppRunning = false;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -598,9 +608,191 @@ public class DeviceUtil {
 
     /**
      * 检测手机是否有内存卡
+     *
      * @return boolean
      */
     public static boolean isExternalMediaMounted() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    /**
+     * 判断服务是否启动, 注意只要名称相同, 会检测任何服务.
+     *
+     * @param context
+     *         上下文
+     * @param serviceClass
+     *         服务类
+     * @return 是否启动服务
+     */
+    public static boolean isServiceRunning(Context context, Class<?> serviceClass) {
+        if (context == null) {
+            return false;
+        }
+
+        Context appContext = context.getApplicationContext();
+        ActivityManager manager = (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
+
+        if (manager != null) {
+            List<ActivityManager.RunningServiceInfo> infos = manager.getRunningServices(Integer.MAX_VALUE);
+            if (infos != null && !infos.isEmpty()) {
+                for (ActivityManager.RunningServiceInfo service : infos) {
+                    // 添加Uid验证, 防止服务重名, 当前服务无法启动
+                    if (getUid(context) == service.uid) {
+                        if (serviceClass.getName().equals(service.service.getClassName())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取应用的Uid, 用于验证服务是否启动
+     *
+     * @param context
+     *         上下文
+     * @return uid
+     */
+    public static int getUid(Context context) {
+        if (context == null) {
+            return -1;
+        }
+
+        int pid = android.os.Process.myPid();
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        if (manager != null) {
+            List<ActivityManager.RunningAppProcessInfo> infos = manager.getRunningAppProcesses();
+            if (infos != null && !infos.isEmpty()) {
+                for (ActivityManager.RunningAppProcessInfo processInfo : infos) {
+                    if (processInfo.pid == pid) {
+                        return processInfo.uid;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    // 获取通知的ID, 防止重复, 可以用于通知的ID
+    public static class NotificationID {
+        // 随机生成一个数
+        private final static AtomicInteger c = new AtomicInteger(0);
+
+        // 获取一个不重复的数, 从0开始
+        public static int getID() {
+            return c.incrementAndGet();
+        }
+    }
+
+    /**
+     * 检测应用是否运行
+     *
+     * @param packageName
+     *         包名
+     * @param context
+     *         上下文
+     * @return 是否存在
+     */
+    public static boolean isAppAlive(String packageName, Context context) {
+        if (context == null || TextUtils.isEmpty(packageName)) {
+            return false;
+        }
+
+        ActivityManager activityManager = (ActivityManager)
+                context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        if (activityManager != null) {
+            List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+            if (procInfos != null && !procInfos.isEmpty()) {
+                for (int i = 0; i < procInfos.size(); i++) {
+                    if (procInfos.get(i).processName.equals(packageName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 获取进程名称
+     *
+     * @param context
+     *         上下文
+     * @return 进程名称
+     */
+    public static String getProcessName(Context context) {
+        int pid = android.os.Process.myPid();
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> infos = manager.getRunningAppProcesses();
+        if (infos != null) {
+            for (ActivityManager.RunningAppProcessInfo processInfo : infos) {
+                if (processInfo.pid == pid) {
+                    return processInfo.processName;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 检测计步传感器是否可以使用
+     *
+     * @param context
+     *         上下文
+     * @return 是否可用计步传感器
+     */
+    public static boolean hasStepSensor(Context context) {
+        if (context == null) {
+            return false;
+        }
+
+        Context appContext = context.getApplicationContext();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return false;
+        } else {
+            boolean hasSensor = false;
+            Sensor sensor = null;
+            try {
+                hasSensor = appContext.getPackageManager().hasSystemFeature("android.hardware.sensor.stepcounter");
+                SensorManager sm = (SensorManager) appContext.getSystemService(Context.SENSOR_SERVICE);
+                sensor = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return hasSensor && sensor != null;
+        }
+    }
+
+    // 获取通知的ID, 防止重复, 可以用于通知的ID
+    public static int getNotificationID() {
+        // 随机生成一个数
+        AtomicInteger c = new AtomicInteger(0);
+
+        return c.incrementAndGet();
+    }
+
+    /**
+     * 检测屏幕是否开启
+     *
+     * @param context
+     *         上下文
+     * @return 是否屏幕开启
+     */
+    public static boolean isScreenOn(Context context) {
+        Context appContext = context.getApplicationContext();
+        PowerManager pm = (PowerManager) appContext.getSystemService(Context.POWER_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            return pm.isInteractive();
+        } else {
+            // noinspection all
+            return pm.isScreenOn();
+        }
     }
 }

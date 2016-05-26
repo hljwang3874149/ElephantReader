@@ -6,46 +6,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0"
-    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
     >
+    <!--android:background="@color/colorPrimary"-->
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="200dp"
+        android:layout_height="256dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:minHeight="200dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/colorPrimary"
-            app:expandedTitleMarginStart="20dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@color/colorPrimary"
-            app:titleEnabled="false"
             android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false"
             >
-
+            <!--app:statusBarScrim="@color/colorPrimary"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
             <ImageView
-                android:layout_marginTop="?attr/actionBarSize"
                 android:id="@+id/headerImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
                 android:contentDescription="@null"
-                android:maxHeight="240dp"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7"
-                android:visibility="invisible"/>
-
+                />
+            <!--app:layout_collapseParallaxMultiplier="0.7"-->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -60,6 +60,8 @@
         android:alpha="0"
         android:scaleX="0"
         android:scaleY="0"
+        android:clickable="true"
+        app:rippleColor="#AD1457"
         android:src="@android:drawable/ic_menu_upload_you_tube"/>
 
     <include

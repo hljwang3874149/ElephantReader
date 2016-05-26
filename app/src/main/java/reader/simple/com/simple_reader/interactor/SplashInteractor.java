@@ -19,6 +19,7 @@ import java.io.IOException;
 public class SplashInteractor {
 
     public Bitmap getSplashBitmap(Context context) {
+//        Glide.with(context).load(Uri.parse("file:///android_asset/splash/splash_background.jpg")).asBitmap()
         Bitmap mBitmap;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
