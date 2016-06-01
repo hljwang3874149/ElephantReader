@@ -32,7 +32,7 @@ import reader.simple.com.simple_reader.viewInterface.WebTextView;
 
 public class WebTextActivity extends BaseSwipeActivity
         implements WebTextView {
-    @InjectView(R.id.webView)
+    //    @InjectView(R.id.webView)
     ArticleWebView webView;
     @InjectView(R.id.scrollView)
     NestedScrollView scrollView;
@@ -71,6 +71,12 @@ public class WebTextActivity extends BaseSwipeActivity
 
     @Override
     protected void initViewsAndEvents() {
+        webView = new ArticleWebView(this);
+        webView.setVisibility(View.INVISIBLE);
+        ViewGroup.LayoutParams mParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams
+                .MATCH_PARENT);
+        scrollView.addView(webView, mParams);
+
         mScreenHight = DeviceUtil.getScreenHeight(this);
         mPresenter = new WebTextPresenter(this, this,
                 getIntent().getStringExtra(Constants.KEY_ARCITLE));
@@ -124,9 +130,9 @@ public class WebTextActivity extends BaseSwipeActivity
             scrollView.smoothScrollTo(0, 10);
         });
 
-        ViewGroup.LayoutParams mParams = webView.getLayoutParams();
-        mParams.width = DeviceUtil.getScreenWidth(this);
-        mParams.height = DeviceUtil.getScreenHeight(this);
+//        ViewGroup.LayoutParams mParams = webView.getLayoutParams();
+//        mParams.width = DeviceUtil.getScreenWidth(this);
+//        mParams.height = DeviceUtil.getScreenHeight(this);
 
     }
 
@@ -153,12 +159,14 @@ public class WebTextActivity extends BaseSwipeActivity
 
     @Override
     protected void doOnDestroy() {
+        fab.clearAnimation();
         if (null != mPresenter) {
             mPresenter.onDestroy();
             mPresenter = null;
         }
-        if (webView != null)
-            webView.destroy();
+        if (webView != null) webView.destroy();
+
+        webView = null;
     }
 
     @Override
@@ -198,8 +206,8 @@ public class WebTextActivity extends BaseSwipeActivity
 
     @Override
     public void showLoadingView() {
-        if(null != loadView)
-        loadView.setVisibility(View.VISIBLE);
+        if (null != loadView)
+            loadView.setVisibility(View.VISIBLE);
     }
 
     @Override

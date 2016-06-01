@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
-import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.DebugUtil;
 
 
@@ -56,7 +55,7 @@ public class DragViewLayout extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         //当view inflate 完毕 获取 要监听的view
-        mFirstView = findViewById(R.id.notify_image);
+//        mFirstView = findViewById(R.id.notify_image);
     }
 
 
@@ -84,13 +83,14 @@ public class DragViewLayout extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+        mFirstView = getChildAt(0);
         mViewTop = mFirstView.getTop();
     }
 
 
     private ViewDragHelper.Callback mCallback = new ViewDragHelper.Callback() {
 
-            //确认 当前view 是否需要处理手势
+        //确认 当前view 是否需要处理手势
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
 
@@ -102,6 +102,7 @@ public class DragViewLayout extends FrameLayout {
         public int clampViewPositionHorizontal(View child, int left, int dx) {
             return mFirstView.getLeft();
         }
+
         //处理纵向手势
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {

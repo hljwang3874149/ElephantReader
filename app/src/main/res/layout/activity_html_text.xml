@@ -58,11 +58,11 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:alpha="0"
+        android:clickable="true"
         android:scaleX="0"
         android:scaleY="0"
-        android:clickable="true"
-        app:rippleColor="#AD1457"
-        android:src="@android:drawable/ic_menu_upload_you_tube"/>
+        android:src="@android:drawable/ic_menu_upload_you_tube"
+        app:rippleColor="#AD1457"/>
 
     <include
         layout="@layout/layout_loading_view"

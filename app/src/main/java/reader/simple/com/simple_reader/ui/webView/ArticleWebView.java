@@ -24,13 +24,12 @@ public class ArticleWebView extends WebView {
     }
 
     public ArticleWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
-        getSettings().setSupportZoom(true);
+        getSettings().setSupportZoom(false);
         getSettings().setBuiltInZoomControls(false);
         getSettings().setDomStorageEnabled(true);
         getSettings().setLoadsImagesAutomatically(true);
@@ -58,8 +57,14 @@ public class ArticleWebView extends WebView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void destroy() {
+        removeAllViews();
         freeMemory();
         clearHistory();
         destroy();
+        super.destroy();
     }
 }

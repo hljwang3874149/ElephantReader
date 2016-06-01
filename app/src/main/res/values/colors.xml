@@ -9,4 +9,5 @@
     <color name="lighter_gray">#ddd</color>
     <color name="common_bg">#fcfcfc</color>
     <color name="common_bg_press">#a8a8a8</color>
+    <color name="c_dbdb">#dbdbdb</color>
 </resources>

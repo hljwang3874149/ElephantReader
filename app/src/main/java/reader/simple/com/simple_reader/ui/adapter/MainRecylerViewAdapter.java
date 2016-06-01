@@ -3,6 +3,7 @@ package reader.simple.com.simple_reader.ui.adapter;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -50,7 +51,7 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void setItems(List<ArticleInfo> info) {
-        int pos = getItemCount() ;
+        int pos = getItemCount();
         testDate.addAll(info);
         notifyItemRangeInserted(pos, info.size());
 
@@ -83,7 +84,7 @@ public class MainRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (KEY_ITEM == viewType) {
-            View view = View.inflate(mContext, R.layout.activity_recyclerview_item, null);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.activity_recyclerview_item, parent, false);
             return new ViewHolder(view);
         } else {
             View view = View.inflate(mContext, R.layout.bikeput_station_list_footview, null);

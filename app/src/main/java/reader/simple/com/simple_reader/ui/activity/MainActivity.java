@@ -2,11 +2,13 @@ package reader.simple.com.simple_reader.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +32,7 @@ import reader.simple.com.simple_reader.presenter.impl.MainPresenter;
 import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
 import reader.simple.com.simple_reader.ui.adapter.MainDrawerAdapter;
 import reader.simple.com.simple_reader.ui.adapter.MainRecylerViewAdapter;
+import reader.simple.com.simple_reader.ui.widget.RecyclerViewItemDecoration;
 import reader.simple.com.simple_reader.viewInterface.MainView;
 
 public class MainActivity extends BaseActivity implements
@@ -130,6 +133,7 @@ public class MainActivity extends BaseActivity implements
                     break;
                 case 2:
                     startActivityWithIntent(new Intent(this, ShowNotifyActivity.class));
+                    break;
                 case 3:
                     startActivityWithIntent(new Intent(this, ReflectionActivity.class));
             }
@@ -192,6 +196,8 @@ public class MainActivity extends BaseActivity implements
         mainRecyclerView.setLayoutManager(mLinearLayoutManager);
         mainRecyclerView.setItemAnimator(ItemAnimatorFactory.slideIn());
         mainRecyclerView.setAdapter(mRecylerAdapter);
+//        mainRecyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL_LIST));
+        mainRecyclerView.addItemDecoration(new RecyclerViewItemDecoration(this));
     }
 
     @Override
@@ -248,11 +254,20 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         mDoubleClickExitHelper.onBackPress();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    private void openDayNight(int mode) {
+        AppCompatDelegate.setDefaultNightMode(mode);
+        if (Build.VERSION.SDK_INT > 11) {
+            recreate();
+
+        }
     }
 }

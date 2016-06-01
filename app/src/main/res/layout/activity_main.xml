@@ -23,10 +23,10 @@
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:choiceMode="singleChoice"
             android:divider="@null"
             android:layoutAnimation="@anim/left_drawer"
-            android:choiceMode="singleChoice"
-            android:background="@android:color/white"
             />
 
     </android.support.v4.widget.DrawerLayout>
