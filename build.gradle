@@ -42,7 +42,7 @@ project.ext {
     appID = "reader.simple.com.simple_reader"
     min = 14
     target = 23
-    code = 2
+    code = 3
     name = "1.1"
 
     javaVersion = JavaVersion.VERSION_1_8

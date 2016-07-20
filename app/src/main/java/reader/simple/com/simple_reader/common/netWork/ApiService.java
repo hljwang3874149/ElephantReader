@@ -2,6 +2,7 @@ package reader.simple.com.simple_reader.common.netWork;
 
 import reader.simple.com.simple_reader.domain.ArticleDescInfo;
 import reader.simple.com.simple_reader.domain.PageInfo;
+import reader.simple.com.simple_reader.domain.SplashInfo;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -26,4 +27,6 @@ public interface ApiService {
     @GET("art/list")
     Observable<PageInfo> loadMoreArticle(@Query("pageSize") int pageSize, @Query("create_time") String createTime, @Query("update_time") String
             updateTime);
+    @GET("https://raw.githubusercontent.com/hljwang3874149/UpdateVersion/master/reader.json")
+    Observable<SplashInfo> loadSplashImg();
 }

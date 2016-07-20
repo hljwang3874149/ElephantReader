@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity implements
         initRecyclerView();
         initSwipeFreshView();
         initDrawerLayout();
-
         presenter.initialized();
         mDoubleClickExitHelper = new DoubleClickExitHelper(this);
 
@@ -105,12 +104,9 @@ public class MainActivity extends BaseActivity implements
 
                     @Override
                     public void onDrawerStateChanged(int newState) {
-                        super.onDrawerStateChanged
-                                (newState);
-                        if (newState == DrawerLayout
-                                .STATE_SETTLING) {
-                            slideContentList
-                                    .startLayoutAnimation();
+                        super.onDrawerStateChanged(newState);
+                        if (newState == DrawerLayout.STATE_SETTLING) {
+                            slideContentList.startLayoutAnimation();
                         }
                     }
                 };

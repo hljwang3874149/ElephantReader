@@ -218,6 +218,16 @@ public class DeviceUtil {
         }
         return appVersion;
     }
+    public static int getAppVersionCode(Context mContext){
+        PackageManager mPackageManager =  mContext.getPackageManager();
+        try {
+            PackageInfo mInfo = mPackageManager.getPackageInfo(mContext.getPackageName(),0);
+           return  mInfo.versionCode;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+            return Integer.MAX_VALUE;
+        }
+    }
 
     /**
      * 获取带平台信息的url
