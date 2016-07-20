@@ -9,6 +9,7 @@ import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.common.Utils;
 import reader.simple.com.simple_reader.domain.ArticleDescInfo;
 import reader.simple.com.simple_reader.domain.PageInfo;
+import reader.simple.com.simple_reader.domain.SplashInfo;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -86,6 +87,12 @@ public class RetrofitNetWork {
     public Observable<PageInfo> loadMoreArticle(int pageSize, String createTime, String updateTime) {
         return mApiService.loadMoreArticle(pageSize, createTime, updateTime)
                 .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<SplashInfo> loadSplashImg(){
+        return mApiService.loadSplashImg()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

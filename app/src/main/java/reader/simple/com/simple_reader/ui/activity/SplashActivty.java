@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
-import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.presenter.Presenter;
 import reader.simple.com.simple_reader.presenter.impl.SplashPresenter;
 import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
@@ -45,7 +44,6 @@ public class SplashActivty extends BaseActivity implements SplashView {
 
     @Override
     protected int getContentViewLayoutID() {
-        DebugUtil.e("getContentViewLayoutID");
         return R.layout.activity_splash_activty;
     }
 

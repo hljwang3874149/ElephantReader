@@ -6,8 +6,7 @@ import android.content.Context;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 
-import reader.simple.com.simple_reader.common.ACache;
-import reader.simple.com.simple_reader.common.CrashHandler;
+import reader.simple.com.simple_reader.utils.PreferenceManager;
 
 
 public class BaseApplication extends Application {
@@ -33,6 +32,7 @@ public class BaseApplication extends Application {
         } else {
             cacheDir = getApplicationContext().getCacheDir().toString();
         }
+        PreferenceManager.initPreferences(this);
         LeakCanary.install(this);
         BlockCanary.install(this, new AppBlockCanaryContext()).start();
     }
