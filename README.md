@@ -17,6 +17,17 @@
 
 目前使用简单的阅读功能
 
+### apk 下载地址
+ [下载地址](/apk)
+ 
+###v1.1
+
+ 1.新增动态配置loading 页面
+ 2.优化ui
+ 3.添加友盟统计
+
+
+
 ###v1.0的效果展示 ：
 
 <img src="/gif/Gif_4.gif" alt="sample4" title="sample" width="400" height="680" />
@@ -29,15 +40,6 @@
 
 
 ## Contact Me
-
-###v1.1
-
- 1.新增动态配置loading 页面
- 2.优化ui
- 3.添加友盟统计
-
- ### apk 下载地址
- [下载地址](/apk)
 
 If you have any questions or want to make friends with me, please feel free to contact me : [email](mailto:wxlwxl2012@163.com "Welcome to contact me")
 如果侵权行为望告知[email](mailto:wxlwxl2012@163.com "you have trouble")
