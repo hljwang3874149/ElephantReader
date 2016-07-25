@@ -52,6 +52,7 @@ public class SplashActivty extends BaseActivity implements SplashView {
         Presenter splashPresenter = new SplashPresenter(this, this);
         splashPresenter.initialized();
 
+
         ViewCompat.animate(fullscreenContent)
                 .scaleX(1.0f)
                 .scaleY(1.0f)

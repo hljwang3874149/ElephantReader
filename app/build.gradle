@@ -50,4 +50,5 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile files('libs/tbs_sdk_v1.5.1.jar')
     compile 'com.orhanobut:logger:1.15'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

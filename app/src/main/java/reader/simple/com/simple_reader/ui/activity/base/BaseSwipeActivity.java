@@ -22,6 +22,13 @@ public abstract class BaseSwipeActivity extends BaseActivity implements SwipeBac
     private SwipeBackActivityHelper mHelper;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.setStatusBar();
+
+    }
+
+    @Override
     protected void doBeforeSetContentView() {
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();

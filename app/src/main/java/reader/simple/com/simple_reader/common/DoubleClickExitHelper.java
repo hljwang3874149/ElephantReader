@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import reader.simple.com.simple_reader.R;
 
 
@@ -73,6 +75,7 @@ public class DoubleClickExitHelper {
     }
 
     public void exitApp() {
+        MobclickAgent.onKillProcess(mActivity);
         mActivity.finish();
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);

@@ -2,6 +2,7 @@ package reader.simple.com.simple_reader.ui.activity;
 
 import android.os.Build;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
@@ -30,9 +31,7 @@ import reader.simple.com.simple_reader.ui.activity.base.BaseSwipeActivity;
 import reader.simple.com.simple_reader.ui.webView.ArticleWebView;
 import reader.simple.com.simple_reader.viewInterface.WebTextView;
 
-public class WebTextActivity extends BaseSwipeActivity
-        implements WebTextView {
-    //    @InjectView(R.id.webView)
+public class WebTextActivity extends BaseSwipeActivity implements WebTextView {
     ArticleWebView webView;
     @InjectView(R.id.scrollView)
     NestedScrollView scrollView;
@@ -41,7 +40,7 @@ public class WebTextActivity extends BaseSwipeActivity
     @InjectView(R.id.headerImage)
     ImageView mImageView;
     @InjectView(R.id.html_text_rootview)
-    View mRootView;
+    CoordinatorLayout mRootView;
     @InjectView(R.id.loadView)
     ProgressBar loadView;
     private WebTextPresenter mPresenter;
@@ -133,7 +132,6 @@ public class WebTextActivity extends BaseSwipeActivity
 //        ViewGroup.LayoutParams mParams = webView.getLayoutParams();
 //        mParams.width = DeviceUtil.getScreenWidth(this);
 //        mParams.height = DeviceUtil.getScreenHeight(this);
-
     }
 
     private void initRootView() {

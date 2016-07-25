@@ -15,3 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+#umeng
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep public class reader.simple.com.simple_reader.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

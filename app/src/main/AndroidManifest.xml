@@ -15,6 +15,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/SwipeBackTheme">
+        <meta-data android:value="57957d84e0f55adec1002461" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="1" android:name="UMENG_CHANNEL"/>
+
         <activity
             android:name=".ui.activity.SplashActivty"
             android:configChanges="orientation|keyboardHidden|screenSize"

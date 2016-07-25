@@ -2,6 +2,8 @@ package reader.simple.com.simple_reader.ui.activity;
 
 import android.widget.ImageView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.InjectView;
 import reader.simple.com.simple_reader.R;
 import reader.simple.com.simple_reader.ui.activity.base.BaseActivity;
@@ -30,6 +32,7 @@ public class ShowNotifyActivity extends BaseActivity {
     @Override
     protected void initViewsAndEvents() {
         showDialogFragment();
+        MobclickAgent.onEvent(this,"notification");
         notifyImage.setOnClickListener(v -> {
             showDialogFragment();
         });

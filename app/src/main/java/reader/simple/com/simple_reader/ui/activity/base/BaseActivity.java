@@ -1,5 +1,6 @@
 package reader.simple.com.simple_reader.ui.activity.base;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,11 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import reader.simple.com.simple_reader.R;
+import reader.simple.com.simple_reader.utils.SystemBarTintManager;
 
 /**
  * 项目名称：Simple_Reader
@@ -27,6 +32,7 @@ import reader.simple.com.simple_reader.R;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     Toolbar toolbar;
+    SystemBarTintManager mSystemBarTintManager;
 
     public enum TransitionMode {
         LEFT, RIGHT, TOP, BOTTOM, SCALE, FADE, NONE
@@ -58,14 +64,37 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         super.onCreate(savedInstanceState);
+//        setStatusBar();
+
         doBeforeSetContentView();
         setContentView(getContentViewLayoutID());
         doAfterSetContentView();
         initViewsAndEvents();
     }
 
+    public void setStatusBar() {
+        mSystemBarTintManager = new SystemBarTintManager(this);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            setTranslucentStatus(true);
+        }
+        mSystemBarTintManager.setStatusBarTintEnabled(true);
+        mSystemBarTintManager.setStatusBarTintResource(R.color.colorPrimaryDark);
+    }
+
     protected void doAfterSetContentView() {
 
+    }
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 
     @Override
@@ -81,7 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             toolbar = (Toolbar) v;
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setStatusbar();
+//            setStatusbar();
         }
 
     }
@@ -160,6 +189,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 default:
             }
         }
+    }
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
 
 import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.common.DeviceUtil;
@@ -57,6 +60,11 @@ public class SplashPresenter implements Presenter {
             Glide.with(ctx).load(mPath).crossFade().into(splashView.getBgView());
             setAnimation(splashView.getBgView());
         }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            AnalyticsConfig.sEncrypt = true;
+        } else
+            MobclickAgent.enableEncrypt(true);
 
         requestNewSplashImg();
 
