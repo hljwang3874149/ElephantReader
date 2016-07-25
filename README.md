@@ -30,13 +30,22 @@
 
 ## Contact Me
 
+###v1.1
+
+ 1.新增动态配置loading 页面
+ 2.优化ui
+ 3.添加友盟统计
+
+ ### apk 下载地址
+ [下载地址](/apk)
+
 If you have any questions or want to make friends with me, please feel free to contact me : [email](mailto:wxlwxl2012@163.com "Welcome to contact me")
 如果侵权行为望告知[email](mailto:wxlwxl2012@163.com "you have trouble")
 
 
 ## License
 
-    Copyright 2014 Qi Tang
+    Copyright 2016 Wang Xiao Long
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
