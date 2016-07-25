@@ -13,11 +13,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
-<<<<<<< HEAD
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
-=======
->>>>>>> 25c33cdc705fb6ff5f267893f19e06e6a3563eb8
 
 import reader.simple.com.simple_reader.common.DebugUtil;
 import reader.simple.com.simple_reader.common.DeviceUtil;
