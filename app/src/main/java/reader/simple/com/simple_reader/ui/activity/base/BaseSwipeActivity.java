@@ -24,7 +24,7 @@ public abstract class BaseSwipeActivity extends BaseActivity implements SwipeBac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setStatusBar();
+//        super.setStatusBar();
 
     }
 

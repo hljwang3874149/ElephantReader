@@ -44,11 +44,12 @@ dependencies {
     compile rootProject.ext.libRipple
     compile rootProject.ext.libSwipeBack
 
-    compile 'com.github.moduth:blockcanary-ui:1.2.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile files('libs/tbs_sdk_v1.5.1.jar')
+    compile 'com.github.moduth:blockcanary-ui:1.2.0'
     compile 'com.orhanobut:logger:1.15'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.android.support:support-v4:23.4.0'
 }

@@ -96,7 +96,7 @@ public class OperationDialogFragment extends DialogFragment implements DragViewL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.operation_dialog_laouyt, container);
         ButterKnife.inject(this, view);
-        rootDragLayout.setmListener(this);
+        rootDragLayout.setListener(this);
         sliedUpAnimator = ObjectAnimator.ofPropertyValuesHolder(notifyImage, PropertyValuesHolder.ofFloat("translationY",
                 0 - DeviceUtil.getScreenHeight(getActivity())));
         sliedDownAnimator = ObjectAnimator.ofPropertyValuesHolder(notifyImage, PropertyValuesHolder.ofFloat("translationY",
@@ -130,6 +130,11 @@ public class OperationDialogFragment extends DialogFragment implements DragViewL
 
     @Override
     public void onVerticalBack() {
+    }
+
+    @Override
+    public void onHorizonMoving() {
+
     }
 
     private void doAnimatorWithDirection(boolean isUp) {

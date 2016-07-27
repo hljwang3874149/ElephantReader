@@ -1,6 +1,7 @@
 package reader.simple.com.simple_reader.presenter.impl;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.format.DateUtils;
 
@@ -8,6 +9,7 @@ import reader.simple.com.simple_reader.common.ACache;
 import reader.simple.com.simple_reader.common.netWork.RetrofitNetWork;
 import reader.simple.com.simple_reader.domain.PageInfo;
 import reader.simple.com.simple_reader.presenter.Presenter;
+import reader.simple.com.simple_reader.ui.service.LockScreenService;
 import reader.simple.com.simple_reader.viewInterface.MainView;
 import rx.subscriptions.CompositeSubscription;
 
@@ -45,12 +47,18 @@ public class MainPresenter implements Presenter {
             mView.showRefreshLoading();
             getArticleInfos(DEFAULT_ROW);
         }
+        startService();
 
+    }
+
+    private void startService() {
+        mContext.startService(new Intent(mContext, LockScreenService.class));
     }
 
     @Override
     public void onDestroy() {
         subscriptions.unsubscribe();
+        mContext.stopService(new Intent(mContext, LockScreenService.class));
     }
 
     public void getArticleInfos(int pageNum) {

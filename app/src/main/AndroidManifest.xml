@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
 
     <application
         android:name=".BaseApplication"
@@ -15,8 +16,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/SwipeBackTheme">
-        <meta-data android:value="57957d84e0f55adec1002461" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="1" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="57957d84e0f55adec1002461"/>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="1"/>
 
         <activity
             android:name=".ui.activity.SplashActivty"
@@ -55,6 +60,23 @@
             android:label="@string/title_activity_reflection"
             android:theme="@style/SwipeBackTheme">
         </activity>
+        <activity
+            android:name=".ui.activity.LockScreenActivity"
+            android:label="@string/title_activity_lockscreen"
+            android:taskAffinity="reader.simple.com.simple_reader.lock"
+            android:theme="@style/SwipeBackTheme">
+        </activity>
+
+        <service
+            android:name=".ui.service.LockScreenService"
+            android:enabled="true"
+            android:process=":gray"
+            android:exported="false"/>
+        <service
+            android:name=".ui.service.LockScreenService"
+            android:enabled="true"
+            android:process=":gray"
+            android:exported="false"/>
     </application>
 
 </manifest>

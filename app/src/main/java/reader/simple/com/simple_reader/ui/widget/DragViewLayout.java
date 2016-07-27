@@ -25,10 +25,18 @@ import reader.simple.com.simple_reader.common.DebugUtil;
 public class DragViewLayout extends FrameLayout {
     private ViewDragHelper mViewDrageHelper;
     private View mFirstView;
-    private int mViewTop;
+    private int mViewTop , mViewLeft;
     private DrageViewClampVerticalListener mListener;
+    private boolean mVerticalUp = true, mVerticalDown = true, mHorizonLeft, mHorizonRight;
 
-    public void setmListener(DrageViewClampVerticalListener mListener) {
+    public void setHorizonLeft(boolean horizonLeft, boolean verticalDown, boolean verticalUp, boolean nHorizonRight) {
+        mHorizonLeft = horizonLeft;
+        mVerticalDown = verticalDown;
+        mVerticalUp = verticalUp;
+        this.mHorizonRight = nHorizonRight;
+    }
+
+    public void setListener(DrageViewClampVerticalListener mListener) {
         this.mListener = mListener;
     }
 
@@ -85,6 +93,7 @@ public class DragViewLayout extends FrameLayout {
         super.onLayout(changed, left, top, right, bottom);
         mFirstView = getChildAt(0);
         mViewTop = mFirstView.getTop();
+        mViewLeft = mFirstView.getLeft();
     }
 
 
@@ -100,16 +109,34 @@ public class DragViewLayout extends FrameLayout {
         //处理横向手势
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return mFirstView.getLeft();
+            if (mHorizonLeft || mHorizonRight) {
+                if (null != mListener) {
+                    mListener.onHorizonMoving();
+                }
+                if (mHorizonRight && !mHorizonLeft) {
+                    if (left < 0) {
+                        return child.getLeft();
+                    }
+                }
+                return left;
+            } else {
+                return mFirstView.getLeft();
+            }
+
         }
 
         //处理纵向手势
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            if (null != mListener) {
-                mListener.onVerticalMoving();
+            if (mVerticalUp || mVerticalDown) {
+                if (null != mListener) {
+                    mListener.onVerticalMoving();
+                }
+                return top;
+            } else {
+                return child.getTop();
             }
-            return top;
+
         }
         //抬起手势处理
 
@@ -120,9 +147,15 @@ public class DragViewLayout extends FrameLayout {
                 return;
             }
             DebugUtil.e(" onViewReleased move = " + releasedChild.getTop() + " | up =" + mViewTop + " viewtop = " + mFirstView.getTop());
-            if (Math.abs(releasedChild.getTop() - mViewTop) > ViewConfiguration.get(getContext()).getScaledTouchSlop() * 3) {
-                mListener.onVerticalMoveDirection(releasedChild.getTop() < mViewTop);
-            } else {
+            if(mVerticalDown || mVerticalUp) {
+                if (Math.abs(releasedChild.getTop() - mViewTop) > ViewConfiguration.get(getContext()).getScaledTouchSlop() * 3) {
+                    mListener.onVerticalMoveDirection(releasedChild.getTop() < mViewTop);
+                } else {
+                    mViewDrageHelper.smoothSlideViewTo(mFirstView, mFirstView.getLeft(), mViewTop);
+                    ViewCompat.postInvalidateOnAnimation(DragViewLayout.this);
+                    mListener.onVerticalBack();
+                }
+            }else{
                 mViewDrageHelper.smoothSlideViewTo(mFirstView, mFirstView.getLeft(), mViewTop);
                 ViewCompat.postInvalidateOnAnimation(DragViewLayout.this);
                 mListener.onVerticalBack();
@@ -138,6 +171,8 @@ public class DragViewLayout extends FrameLayout {
         void onVerticalMoveDirection(boolean isUp);
 
         void onVerticalBack();
+
+        void onHorizonMoving();
 
     }
 

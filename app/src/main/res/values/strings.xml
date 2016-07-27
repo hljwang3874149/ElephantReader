@@ -27,4 +27,8 @@
     <string name="title_activity_reflection" translatable="false">ReflectionActivity</string>
     <string name="exit.double" translatable="false">双击退出</string>
     <string name="loading" translatable="false">加载中。。。</string>
+
+    <string name="title_activity_lockscreen">LockscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
